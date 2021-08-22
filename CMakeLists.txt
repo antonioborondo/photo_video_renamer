@@ -18,7 +18,7 @@ target_include_directories(natural_sort INTERFACE ${CMAKE_CURRENT_BINARY_DIR}/li
 ##### NaturalSort library #####
 
 add_executable(photo_video_renamer
-    src/renamer.cpp
+    src/main.cpp
 )
 
 target_link_libraries(photo_video_renamer

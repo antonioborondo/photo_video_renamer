@@ -1,9 +1,4 @@
-﻿// renamer.cpp : Defines the entry point for the application.
-//
-
-#include "renamer.h"
-
-#include <natural_sort/natural_sort.hpp>
+﻿#include <natural_sort/natural_sort.hpp>
 
 #include <algorithm>
 #include <filesystem>
