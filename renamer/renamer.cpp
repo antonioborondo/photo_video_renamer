@@ -5,7 +5,9 @@
 
 #include <natural_sort/natural_sort.hpp>
 
+#include <algorithm>
 #include <filesystem>
+#include <regex>
 #include <vector>
 
 namespace fs = std::filesystem;
@@ -33,6 +35,21 @@ std::vector<fs::path> get_filenames_from_directory(const fs::path& directory)
     return filenames;
 }
 
+void remove_non_pics_or_movie_filenames(std::vector<fs::path>& filenames)
+{
+
+    filenames.erase(std::remove_if(filenames.begin(), filenames.end(), [](const fs::path& filename)
+        {
+            const std::regex pics_and_movie_file_extensions{ ".jpg|.jpeg|.heic|.mov" };
+
+            auto filename_extension{ filename.extension().string() };
+
+            std::transform(filename_extension.begin(), filename_extension.end(), filename_extension.begin(), ::tolower);
+
+            return !std::regex_match(filename_extension, pics_and_movie_file_extensions);
+
+        }), filenames.end());
+}
 
 int main()
 {
@@ -40,9 +57,18 @@ int main()
 
     std::cout << "Directory: " << directory << std::endl;
 
-    const auto filenames{ get_filenames_from_directory(directory)};
+    auto filenames{ get_filenames_from_directory(directory)};
 
     std::cout << "Filenames:" << std::endl;
+
+    for (const auto& filename : filenames)
+    {
+        std::cout << filename << std::endl;
+    }
+
+    remove_non_pics_or_movie_filenames(filenames);
+
+    std::cout << "Pics and movies:" << std::endl;
 
     for (const auto& filename : filenames)
     {
