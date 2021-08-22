@@ -5,7 +5,7 @@ cmake_minimum_required (VERSION 3.8)
 
 project ("renamer")
 
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 20)
 
 ##### NaturalSort library #####
 set(NATURAL_SORT_LIBRARY ${CMAKE_CURRENT_BINARY_DIR}/lib/natural_sort/include/natural_sort/natural_sort.hpp)

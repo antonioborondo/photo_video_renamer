@@ -7,6 +7,7 @@
 
 #include <algorithm>
 #include <filesystem>
+#include <format>
 #include <regex>
 #include <vector>
 
@@ -51,29 +52,45 @@ void remove_non_pics_or_movie_filenames(std::vector<fs::path>& filenames)
         }), filenames.end());
 }
 
+bool rename_filenames(const std::vector<fs::path>& filenames)
+{
+    const auto number_digits_filename = std::to_string(std::to_string(filenames.size()).length());
+
+    for (auto i = 0; i < filenames.size(); i++)
+    {
+        const auto filename = filenames.at(i);
+
+        const auto new_filename_number = std::format("{:0" + number_digits_filename + "d}", i + 1);
+
+        auto new_filename_extension{ filename.extension().string() };
+
+        std::transform(new_filename_extension.begin(), new_filename_extension.end(), new_filename_extension.begin(), ::tolower);
+
+        auto new_filename = filename.parent_path() / fs::path{ new_filename_number + new_filename_extension };
+
+        try
+        {
+            fs::rename(filename, new_filename);
+        }
+        catch (const fs::filesystem_error&)
+        {
+            return false;
+        }
+    }
+
+    return true;
+}
+
 int main()
 {
     const auto directory{std::filesystem::current_path()};
 
-    std::cout << "Directory: " << directory << std::endl;
-
     auto filenames{ get_filenames_from_directory(directory)};
-
-    std::cout << "Filenames:" << std::endl;
-
-    for (const auto& filename : filenames)
-    {
-        std::cout << filename << std::endl;
-    }
 
     remove_non_pics_or_movie_filenames(filenames);
 
-    std::cout << "Pics and movies:" << std::endl;
-
-    for (const auto& filename : filenames)
-    {
-        std::cout << filename << std::endl;
-    }
+    if (!rename_filenames(filenames))
+        return 1;
 	
 	return 0;
 }
