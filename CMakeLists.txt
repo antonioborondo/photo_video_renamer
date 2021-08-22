@@ -1,9 +1,6 @@
-﻿# CMakeList.txt : Top-level CMake project file, do global configuration
-# and include sub-projects here.
-#
-cmake_minimum_required (VERSION 3.8)
+﻿cmake_minimum_required (VERSION 3.8)
 
-project ("renamer")
+project ("photo_video_renamer")
 
 set(CMAKE_CXX_STANDARD 20)
 
@@ -21,4 +18,4 @@ target_include_directories(natural_sort INTERFACE ${CMAKE_CURRENT_BINARY_DIR}/li
 ##### NaturalSort library #####
 
 # Include sub-projects.
-add_subdirectory ("renamer")
+add_subdirectory ("src")
