@@ -31,7 +31,7 @@ std::vector<fs::path> get_filenames_from_directory(const fs::path& directory)
     return filenames;
 }
 
-void remove_non_pics_or_movie_filenames(std::vector<fs::path>& filenames)
+void remove_non_photo_or_video_filenames(std::vector<fs::path>& filenames)
 {
 
     filenames.erase(std::remove_if(filenames.begin(), filenames.end(), [](const fs::path& filename)
@@ -82,7 +82,7 @@ int main()
 
     auto filenames{ get_filenames_from_directory(directory)};
 
-    remove_non_pics_or_movie_filenames(filenames);
+    remove_non_photo_or_video_filenames(filenames);
 
     if (!rename_filenames(filenames))
         return 1;
