@@ -17,5 +17,11 @@ add_library(natural_sort INTERFACE)
 target_include_directories(natural_sort INTERFACE ${CMAKE_CURRENT_BINARY_DIR}/lib/natural_sort/include)
 ##### NaturalSort library #####
 
-# Include sub-projects.
-add_subdirectory ("src")
+add_executable(photo_video_renamer
+    src/renamer.cpp
+)
+
+target_link_libraries(photo_video_renamer
+    PRIVATE
+    natural_sort
+)
