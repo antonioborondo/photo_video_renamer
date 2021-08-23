@@ -36,7 +36,7 @@ void remove_non_photo_or_video_filenames(std::vector<fs::path>& filenames)
 {
     filenames.erase(std::remove_if(filenames.begin(), filenames.end(), [](const fs::path& filename)
     {
-        const std::regex pics_and_movie_file_extensions{ ".jpg|.jpeg|.heic|.mov" };
+        const std::regex pics_and_movie_file_extensions{ ".jpg|.jpeg|.heic|.mov|.mp4" };
 
         auto filename_extension{ filename.extension().string() };
 
