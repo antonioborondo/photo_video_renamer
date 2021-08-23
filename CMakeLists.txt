@@ -1,21 +1,8 @@
-﻿cmake_minimum_required (VERSION 3.8)
+﻿cmake_minimum_required(VERSION 3.8)
 
-project ("photo_video_renamer")
+project("photo_video_renamer")
 
 set(CMAKE_CXX_STANDARD 20)
-
-##### NaturalSort library #####
-set(NATURAL_SORT_LIBRARY ${CMAKE_CURRENT_BINARY_DIR}/lib/natural_sort/include/natural_sort/natural_sort.hpp)
-
-if(NOT EXISTS ${NATURAL_SORT_LIBRARY})
-    message(STATUS "Downloading NaturalSort from https://github.com/scopeInfinity/NaturalSort")
-    file(DOWNLOAD "https://raw.githubusercontent.com/scopeInfinity/NaturalSort/master/natural_sort.hpp" ${NATURAL_SORT_LIBRARY})
-endif()
-
-add_library(natural_sort INTERFACE)
-
-target_include_directories(natural_sort INTERFACE ${CMAKE_CURRENT_BINARY_DIR}/lib/natural_sort/include)
-##### NaturalSort library #####
 
 add_executable(photo_video_renamer
     src/main.cpp
@@ -25,3 +12,5 @@ target_link_libraries(photo_video_renamer
     PRIVATE
     natural_sort
 )
+
+add_subdirectory(lib)
