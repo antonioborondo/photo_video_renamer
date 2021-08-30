@@ -7,7 +7,4 @@ jobs:
       - uses: actions/checkout@v2
       - run: cmake -G "Visual Studio 16 2019" -B ${{github.workspace}}/build 
       - run: cmake --build ${{github.workspace}}/build --config Release
-      - name: Pack
-        working-directory: ${{github.workspace}}/build
-        shell: bash
-        run: cpack -G NSIS
+      - run: cpack -G NSIS -B ${{github.workspace}}/build
