@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <filesystem>
 #include <format>
+#include <iostream>
 #include <regex>
 #include <vector>
 
@@ -101,9 +102,27 @@ bool rename_filenames(const std::vector<fs::path>& filenames, const std::vector<
     return true;
 }
 
-int main()
+bool directory_exists(const fs::path directory)
 {
-    const auto directory{std::filesystem::current_path()};
+    return (fs::exists(directory) && fs::is_directory(directory));
+}
+
+int main(int argc, const char** argv)
+{
+    if(2 != argc)
+    {
+        std::cout << "Usage: photo_video_renamer.exe <directory>" << std::endl;
+
+        return 1;
+    }
+
+    const std::filesystem::path directory{argv[1]};
+    if (!directory_exists(directory))
+    {
+        std::cout << "Error: Directory '" << argv[1] << "' does not exist" << std::endl;
+
+        return 1;
+    }
 
     auto filenames{get_filenames_from_directory(directory)};
 
