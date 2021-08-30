@@ -20,4 +20,4 @@ jobs:
       - name: Pack
         working-directory: ${{github.workspace}}/build
         shell: bash
-        run: cpack
+        run: cpack -G NSIS
