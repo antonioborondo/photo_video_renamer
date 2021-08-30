@@ -1,10 +1,18 @@
-﻿name: GitHub Actions Demo
-on: [push]
+﻿name: Actions
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
 jobs:
-  Explore-GitHub-Actions:
+  build:
     runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v2
-      - run: cmake -G "Visual Studio 16 2019" -B ${{github.workspace}}/build 
-      - run: cmake --build ${{github.workspace}}/build --config Release
-      - run: cpack -G NSIS -B ${{github.workspace}}/build
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - name: Configure CMake
+        run: cmake -G "Visual Studio 16 2019" -B ${{github.workspace}}/build 
+      - name: Build
+        run: cmake --build ${{github.workspace}}/build --config Release

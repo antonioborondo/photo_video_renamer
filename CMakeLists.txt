@@ -14,11 +14,3 @@ target_link_libraries(photo_video_renamer
 )
 
 add_subdirectory(lib)
-
-install(TARGETS photo_video_renamer RUNTIME DESTINATION bin)
-
-include(InstallRequiredSystemLibraries)
-set(CPACK_RESOURCE_FILE_LICENSE ${CMAKE_CURRENT_SOURCE_DIR}/LICENSE.md)
-set(CPACK_PACKAGE_VERSION_MAJOR 1)
-set(CPACK_PACKAGE_VERSION_MINOR 0)
-include(CPack)
