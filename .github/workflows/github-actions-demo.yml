@@ -12,7 +12,7 @@ jobs:
         run: mkdir build && cd build
       - name: Configure CMake
         working-directory: ${{github.workspace}}/build
-        run: cd build && cmake -G "Visual Studio 16 2019" ..
+        run: cmake -G "Visual Studio 16 2019" ..
       - name: Build
         working-directory: ${{github.workspace}}/build
         shell: bash
