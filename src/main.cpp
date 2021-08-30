@@ -109,14 +109,23 @@ bool directory_exists(const fs::path directory)
 
 int main(int argc, const char** argv)
 {
-    if(2 != argc)
+    if(2 < argc)
     {
-        std::cout << "Usage: photo_video_renamer.exe <directory>" << std::endl;
+        std::cout << "Usage: photo_video_renamer.exe [<directory>]" << std::endl;
 
         return 1;
     }
 
-    const std::filesystem::path directory{argv[1]};
+    fs::path directory;
+    if(2 == argc)
+    {
+        directory = argv[1];
+    }
+    else
+    {
+        directory = fs::current_path();
+    }
+
     if (!directory_exists(directory))
     {
         std::cout << "Error: Directory '" << argv[1] << "' does not exist" << std::endl;
