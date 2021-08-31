@@ -2,7 +2,7 @@
 
 project("photo_video_renamer")
 
-set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD 17)
 
 add_executable(photo_video_renamer
     src/main.cpp
