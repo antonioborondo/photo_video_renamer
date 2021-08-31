@@ -14,3 +14,9 @@ target_link_libraries(photo_video_renamer
 )
 
 add_subdirectory(lib)
+
+install(TARGETS photo_video_renamer DESTINATION bin)
+
+set(CPACK_RESOURCE_FILE_LICENSE ${CMAKE_CURRENT_SOURCE_DIR}/LICENSE.md)
+
+include(CPack)
