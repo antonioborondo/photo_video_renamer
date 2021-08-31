@@ -1,8 +1,8 @@
-﻿#include <natural_sort/natural_sort.hpp>
+﻿#include <fmt/format.h>
+#include <natural_sort/natural_sort.hpp>
 
 #include <algorithm>
 #include <filesystem>
-#include <format>
 #include <iostream>
 #include <regex>
 #include <vector>
@@ -57,7 +57,7 @@ std::vector<fs::path> get_new_filenames(const std::vector<fs::path>& filenames, 
     {
         const auto filename = filenames.at(i);
 
-        const auto new_filename_number = std::format("{:0" + number_digits_filename + "d}", i + 1);
+        const auto new_filename_number = fmt::format("{:0" + number_digits_filename + "d}", i + 1);
 
         auto new_filename_extension{ filename.extension().string() };
 
