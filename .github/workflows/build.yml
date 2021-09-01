@@ -5,6 +5,8 @@ on:
     branches: [master]
   pull_request:
     branches: [master]
+  schedule:
+    - cron: '0 0 * * *'
 
 jobs:
   build:
@@ -13,14 +15,14 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
       - name: Configure
-        run: cmake -G "Visual Studio 16 2019" -B ${{github.workspace}}/build 
+        run: cmake -G "Visual Studio 16 2019" -B build
       - name: Build
-        run: cmake --build ${{github.workspace}}/build --config Release
+        run: cmake --build build --config Release
       - name: Pack
-        working-directory: ${{github.workspace}}/build
+        working-directory: build
         run: cpack -G "NSIS"
       - name: Publish
         uses: actions/upload-artifact@v2
         with:
           name: photo_video_renamer
-          path: ${{github.workspace}}/build/photo_video_renamer-0.1.1-win64.exe
+          path: build/*.exe

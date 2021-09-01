@@ -1,6 +1,6 @@
-﻿cmake_minimum_required(VERSION 3.8)
+﻿cmake_minimum_required(VERSION 3.21)
 
-project("photo_video_renamer")
+project(photo_video_renamer)
 
 set(CMAKE_CXX_STANDARD 17)
 
@@ -17,6 +17,8 @@ add_subdirectory(lib)
 
 install(TARGETS photo_video_renamer DESTINATION bin)
 
+set(CPACK_PACKAGE_FILE_NAME ${CMAKE_PROJECT_NAME})
+set(CPACK_PACKAGE_INSTALL_DIRECTORY ${CMAKE_PROJECT_NAME})
 set(CPACK_RESOURCE_FILE_LICENSE ${CMAKE_CURRENT_SOURCE_DIR}/LICENSE.md)
 
 SET(CPACK_NSIS_EXTRA_INSTALL_COMMANDS
