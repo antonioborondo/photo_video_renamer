@@ -2,13 +2,13 @@
 [![build](https://github.com/antonioborondo/photo_video_renamer/actions/workflows/build.yml/badge.svg)](https://github.com/antonioborondo/photo_video_renamer/actions/workflows/build.yml)
 
 ## Description
-Tool to rename all the photos and videos in a directory from the context menu or from the command-line.
+Tool to rename all the photos and videos in a directory from the context menu or from the command line.
 
 ### Context menu example
-![Screenshot](context_menu.gif?raw=true)
+![Screenshot](context_menu_example.gif?raw=true)
 
-### Command-line example
-![Screenshot](command_line.gif?raw=true)
+### Command line example
+![Screenshot](command_line_example.gif?raw=true)
 
 
 ## Features
