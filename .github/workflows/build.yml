@@ -22,5 +22,5 @@ jobs:
       - name: Publish
         uses: actions/upload-artifact@v2
         with:
-          name: my-artifact
+          name: photo_video_renamer
           path: ${{github.workspace}}/build/photo_video_renamer-0.1.1-win64.exe
