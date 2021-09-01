@@ -1,5 +1,7 @@
 # photo_video_renamer
 
+[![build](https://github.com/antonioborondo/photo_video_renamer/actions/workflows/build.yml/badge.svg)](https://github.com/antonioborondo/photo_video_renamer/actions/workflows/build.yml)
+
 ## Description
 Application to batch rename all the photos and videos contained in the current directory using numbers.
 
