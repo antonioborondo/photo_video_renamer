@@ -1,4 +1,4 @@
-﻿name: Checkout, configure, build and pack
+﻿name: build
 
 on:
   push:
@@ -7,7 +7,7 @@ on:
     branches: [master]
 
 jobs:
-  checkout-configure-build-pack:
+  build:
     runs-on: windows-latest
     steps:
       - name: Checkout
