@@ -1,6 +1,8 @@
 # photo_video_renamer
 [![build](https://github.com/antonioborondo/photo_video_renamer/actions/workflows/build.yml/badge.svg)](https://github.com/antonioborondo/photo_video_renamer/actions/workflows/build.yml)
 
+![Screenshot](command_line.gif?raw=true)
+
 ## Description
 Application to rename all the photos and videos in a directory.
 
