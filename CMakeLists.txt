@@ -16,6 +16,7 @@ include(${CONAN_CMAKE})
 conan_cmake_run(
     REQUIRES
     fmt/8.0.1
+    gtest/1.11.0
     BASIC_SETUP CMAKE_TARGETS
     BUILD missing
 )
