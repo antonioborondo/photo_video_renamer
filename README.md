@@ -17,6 +17,7 @@ Tool to rename all the photos and videos in a directory from the context menu or
 - Filename extensions are changed to lowercase.
 
 ## Libraries
+- fmt: https://github.com/fmtlib/fmt
 - NaturalSort: https://github.com/scopeInfinity/NaturalSort
 
 ## Tools
