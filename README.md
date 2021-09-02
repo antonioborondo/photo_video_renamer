@@ -18,6 +18,7 @@ Tool to rename all the photos and videos in a directory from the context menu or
 
 ## Libraries
 - fmt: https://github.com/fmtlib/fmt
+- GoogleTest: https://github.com/google/googletest
 - NaturalSort: https://github.com/scopeInfinity/NaturalSort
 
 ## Tools
