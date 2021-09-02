@@ -21,5 +21,6 @@ Tool to rename all the photos and videos in a directory from the context menu or
 
 ## Tools
 - CMake: https://cmake.org
+- Conan: https://conan.io
 - GitHub Actions: https://github.com/features/actions
 - NSIS: https://sourceforge.net/projects/nsis/
