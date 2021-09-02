@@ -12,6 +12,8 @@ jobs:
   build:
     runs-on: windows-latest
     steps:
+      - name: Install Conan
+        run: pip install conan
       - name: Checkout
         uses: actions/checkout@v2
       - name: Configure

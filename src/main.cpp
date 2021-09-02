@@ -1,10 +1,10 @@
-﻿#include <natural_sort/natural_sort.hpp>
+﻿#include <fmt/format.h>
+#include <natural_sort/natural_sort.hpp>
 
 #include <algorithm>
 #include <filesystem>
 #include <iostream>
 #include <regex>
-#include <sstream>
 #include <vector>
 
 namespace fs = std::filesystem;
@@ -51,20 +51,19 @@ std::vector<fs::path> get_new_filenames(const std::vector<fs::path>& filenames, 
 {
     std::vector<fs::path> new_filenames;
 
-    const auto number_digits_filename = std::to_string(filenames.size()).length();
+    const auto number_digits_filename{std::to_string(std::to_string(filenames.size()).length())};
 
     for (auto i = 0; i < filenames.size(); i++)
     {
         const auto filename = filenames.at(i);
 
-        std::stringstream new_filename_number;
-        new_filename_number << std::setfill('0') << std::setw(number_digits_filename) << i + 1;
+        const auto new_filename_number{fmt::format("{:0" + number_digits_filename + "d}", i + 1)};
 
         auto new_filename_extension{ filename.extension().string() };
 
         std::transform(new_filename_extension.begin(), new_filename_extension.end(), new_filename_extension.begin(), ::tolower);
 
-        auto new_filename = filename.parent_path() / fs::path{ prefix + new_filename_number.str() + new_filename_extension };
+        auto new_filename = filename.parent_path() / fs::path{ prefix + new_filename_number + new_filename_extension };
 
         new_filenames.push_back(new_filename);
     }
