@@ -22,6 +22,7 @@ conan_cmake_run(
 )
 
 add_executable(photo_video_renamer
+    src/photo_video_renamer.cpp
     src/main.cpp
 )
 
