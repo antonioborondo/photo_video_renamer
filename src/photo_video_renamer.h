@@ -1,3 +1,5 @@
+#pragma once
+
 #include <filesystem>
 
 bool directory_exists(const std::filesystem::path directory);
