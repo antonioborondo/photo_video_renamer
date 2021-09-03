@@ -3,8 +3,6 @@
 #include <filesystem>
 #include <iostream>
 
-namespace fs = std::filesystem;
-
 int main(int argc, const char** argv)
 {
     if(2 < argc)
@@ -14,7 +12,7 @@ int main(int argc, const char** argv)
         return 1;
     }
 
-    auto directory{fs::current_path()};
+    auto directory{std::filesystem::current_path()};
     if(2 == argc)
     {
         directory = argv[1];
@@ -23,7 +21,16 @@ int main(int argc, const char** argv)
     if(!directory_exists(directory))
     {
         std::cout << "Error: Directory " << directory << " does not exist" << std::endl;
+
+        return 1;
     }
 
-    return rename_photos_and_videos_from_directory(directory) ? 0 : 1;
+    if(!rename_photos_and_videos_from_directory(directory))
+    {
+        std::cout << "Error: Cannot rename photos and videos from directory " << directory << std::endl;
+
+        return 1;
+    }
+
+    return 0;
 }
