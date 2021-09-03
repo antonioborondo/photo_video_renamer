@@ -49,20 +49,20 @@ public:
     }
 };
 
-TEST(DirectoryExistsTest, NonExistingDirectoryDoesNotExists)
+TEST(DirectoryExists, NonExistingDirectoryDoesNotExists)
 {
     const std::filesystem::path non_existing_directory{std::tmpnam(nullptr)};
     ASSERT_FALSE(directory_exists(non_existing_directory));
 }
 
-TEST(DirectoryExistsTest, ExistingFileIsNotDirectory)
+TEST(DirectoryExists, ExistingFileIsNotDirectory)
 {
     Directory_wrapper parent_directory;
     File_wrapper file{parent_directory, "test.txt"};
     ASSERT_FALSE(directory_exists(file.path()));
 }
 
-TEST(DirectoryExistsTest, ExistingDirectoryExists)
+TEST(DirectoryExists, ExistingDirectoryExists)
 {
     Directory_wrapper directory;
     ASSERT_TRUE(directory_exists(directory.path()));
