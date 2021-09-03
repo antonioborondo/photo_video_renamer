@@ -5,18 +5,17 @@
 #include <filesystem>
 #include <fstream>
 
-class Directory_wrapper
+class Filesystem_wrapper
 {
+protected:
     std::filesystem::path m_path;
 
-public:
-    Directory_wrapper()
+    Filesystem_wrapper()
     {
-        m_path = std::tmpnam(nullptr);
-        std::filesystem::create_directory(m_path);
     }
 
-    ~Directory_wrapper()
+public:
+    ~Filesystem_wrapper()
     {
         std::filesystem::remove_all(m_path);
     }
@@ -27,25 +26,26 @@ public:
     }
 };
 
-class File_wrapper
+class Directory_wrapper : public Filesystem_wrapper
 {
-    std::filesystem::path m_path;
-
 public:
-    File_wrapper()
+    Directory_wrapper()
+    : Filesystem_wrapper{}
     {
         m_path = std::tmpnam(nullptr);
+        std::filesystem::create_directory(m_path);
+    }
+};
+
+class File_wrapper : public Filesystem_wrapper
+{
+public:
+    File_wrapper(const Directory_wrapper& directory, const std::filesystem::path& filename)
+    : Filesystem_wrapper{}
+    {
+        m_path = directory.path();
+        m_path /= filename;
         std::ofstream file{m_path};
-    }
-
-    ~File_wrapper()
-    {
-        std::filesystem::remove(m_path);
-    }
-
-    const std::filesystem::path path() const
-    {
-        return m_path;
     }
 };
 
@@ -57,7 +57,7 @@ TEST(DirectoryExists, NonExistingDirectoryDoesNotExists)
 
 TEST(DirectoryExists, ExistingFileIsNotDirectory)
 {
-    File_wrapper file;
+    File_wrapper file{Directory_wrapper{}, "test.txt"};
     ASSERT_FALSE(directory_exists(file.path()));
 }
 
