@@ -1,6 +1,9 @@
 ﻿#include "photo_video_renamer.h"
 
+#include <filesystem>
 #include <iostream>
+
+namespace fs = std::filesystem;
 
 int main(int argc, const char** argv)
 {
@@ -11,18 +14,16 @@ int main(int argc, const char** argv)
         return 1;
     }
 
-    bool result{};
+    auto directory{fs::current_path()};
     if(2 == argc)
     {
-        result = rename_photos_and_videos_from_directory(argv[1]);
+        directory = argv[1];
     }
-    else
+
+    if(!directory_exists(directory))
     {
-        result = rename_photos_and_videos_from_directory();
+        std::cout << "Error: Directory '" << directory << "' does not exist" << std::endl;
     }
 
-    if(!result);
-        return 1;
-
-    return 0;
+    return rename_photos_and_videos_from_directory(directory) ? 0 : 1;
 }

@@ -10,6 +10,11 @@
 
 namespace fs = std::filesystem;
 
+bool directory_exists(const fs::path directory)
+{
+    return (fs::exists(directory) && fs::is_directory(directory));
+}
+
 std::vector<fs::path> get_filenames_from_directory(const fs::path& directory)
 {
     std::vector<fs::path> filenames;
@@ -103,20 +108,10 @@ bool rename_filenames(const std::vector<fs::path>& filenames, const std::vector<
     return true;
 }
 
-bool directory_exists(const fs::path directory)
-{
-    return (fs::exists(directory) && fs::is_directory(directory));
-}
+
 
 bool rename_photos_and_videos_from_directory(const fs::path& directory)
 {
-    if (!directory_exists(directory))
-    {
-        std::cout << "Error: Directory '" << directory << "' does not exist" << std::endl;
-
-        return 1;
-    }
-
     auto filenames{get_filenames_from_directory(directory)};
 
     remove_non_photo_or_video_filenames(filenames);
