@@ -10,7 +10,7 @@
 
 namespace fs = std::filesystem;
 
-bool directory_exists(const fs::path directory)
+bool directory_exists(const fs::path& directory)
 {
     return (fs::exists(directory) && fs::is_directory(directory));
 }
