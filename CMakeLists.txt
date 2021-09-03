@@ -21,15 +21,38 @@ conan_cmake_run(
     BUILD missing
 )
 
-add_executable(photo_video_renamer
+add_library(photo_video_renamer_common STATIC
     src/photo_video_renamer.cpp
+)
+
+target_include_directories(photo_video_renamer_common
+    PUBLIC
+    src
+)
+
+target_link_libraries(photo_video_renamer_common
+    PRIVATE
+    CONAN_PKG::fmt
+    natural_sort
+)
+
+add_executable(photo_video_renamer
     src/main.cpp
 )
 
 target_link_libraries(photo_video_renamer
     PRIVATE
-    CONAN_PKG::fmt
-    natural_sort
+    photo_video_renamer_common
+)
+
+add_executable(photo_video_renamer_test
+    test/photo_video_renamer_test.cpp
+)
+
+target_link_libraries(photo_video_renamer_test
+    PRIVATE
+    CONAN_PKG::gtest
+    photo_video_renamer_common
 )
 
 add_subdirectory(lib)
