@@ -22,7 +22,7 @@ int main(int argc, const char** argv)
 
     if(!directory_exists(directory))
     {
-        std::cout << "Error: Directory '" << directory << "' does not exist" << std::endl;
+        std::cout << "Error: Directory " << directory << " does not exist" << std::endl;
     }
 
     return rename_photos_and_videos_from_directory(directory) ? 0 : 1;
