@@ -40,10 +40,10 @@ public:
 class File_wrapper : public Filesystem_wrapper
 {
 public:
-    File_wrapper(const Directory_wrapper& directory, const std::filesystem::path& filename)
+    File_wrapper(const Directory_wrapper& parent_directory, const std::filesystem::path& filename)
     : Filesystem_wrapper{}
     {
-        m_path = directory.path();
+        m_path = parent_directory.path();
         m_path /= filename;
         std::ofstream file{m_path};
     }
@@ -57,7 +57,8 @@ TEST(DirectoryExists, NonExistingDirectoryDoesNotExists)
 
 TEST(DirectoryExists, ExistingFileIsNotDirectory)
 {
-    File_wrapper file{Directory_wrapper{}, "test.txt"};
+    Directory_wrapper parent_directory;
+    File_wrapper file{parent_directory, "test.txt"};
     ASSERT_FALSE(directory_exists(file.path()));
 }
 
