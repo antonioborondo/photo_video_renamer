@@ -21,6 +21,7 @@ jobs:
       - name: Build
         run: cmake --build build --config Release
       - name: Test
+        working-directory: build
         run: ctest -C Release -V
       - name: Pack
         working-directory: build
