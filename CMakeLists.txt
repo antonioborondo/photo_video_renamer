@@ -55,6 +55,8 @@ target_link_libraries(photo_video_renamer_test
     photo_video_renamer_common
 )
 
+add_test(NAME photo_video_renamer_test COMMAND photo_video_renamer_test)
+
 add_subdirectory(lib)
 
 install(TARGETS photo_video_renamer DESTINATION bin)

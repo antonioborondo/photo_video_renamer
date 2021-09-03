@@ -20,6 +20,8 @@ jobs:
         run: cmake -G "Visual Studio 16 2019" -B build
       - name: Build
         run: cmake --build build --config Release
+      - name: Test
+        run: ctest --verbose
       - name: Pack
         working-directory: build
         run: cpack -G "NSIS"
