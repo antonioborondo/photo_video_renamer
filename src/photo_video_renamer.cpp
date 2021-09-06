@@ -34,7 +34,7 @@ std::vector<fs::path> get_filenames_from_directory(const fs::path& directory)
     {
         for(fs::directory_iterator directory_iterator{directory}; fs::directory_iterator{} != directory_iterator; directory_iterator++)
         {
-            if(fs::is_regular_file(directory_iterator->status()))
+            if(fs::is_regular_file(directory_iterator->status()) && filename_is_photo_or_video(directory_iterator->path()))
             {
                 filenames.push_back(directory_iterator->path());
             }
@@ -47,21 +47,6 @@ std::vector<fs::path> get_filenames_from_directory(const fs::path& directory)
     });
 
     return filenames;
-}
-
-void remove_non_photo_or_video_filenames(std::vector<fs::path>& filenames)
-{
-    filenames.erase(std::remove_if(filenames.begin(), filenames.end(), [](const fs::path& filename)
-    {
-        const std::regex pics_and_movie_file_extensions{ ".jpg|.jpeg|.heic|.mov|.mp4" };
-
-        auto filename_extension{ filename.extension().string() };
-
-        std::transform(filename_extension.begin(), filename_extension.end(), filename_extension.begin(), ::tolower);
-
-        return !std::regex_match(filename_extension, pics_and_movie_file_extensions);
-
-    }), filenames.end());
 }
 
 std::vector<fs::path> get_new_filenames(const std::vector<fs::path>& filenames, const std::string& prefix = "")
@@ -119,13 +104,9 @@ bool rename_filenames(const std::vector<fs::path>& filenames, const std::vector<
     return true;
 }
 
-
-
 bool rename_photos_and_videos_from_directory(const fs::path& directory)
 {
     auto filenames{get_filenames_from_directory(directory)};
-
-    remove_non_photo_or_video_filenames(filenames);
 
     auto new_filenames{get_new_filenames(filenames)};
 
