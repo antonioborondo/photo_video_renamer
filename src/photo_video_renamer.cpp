@@ -15,6 +15,17 @@ bool directory_exists(const fs::path& directory)
     return (fs::exists(directory) && fs::is_directory(directory));
 }
 
+bool filename_is_photo_or_video(const fs::path& filename)
+{
+    const std::regex photo_and_video_extensions{".jpg|.jpeg|.heic|.mov|.mp4"};
+
+    auto filename_extension{filename.extension().string()};
+
+    std::transform(filename_extension.begin(), filename_extension.end(), filename_extension.begin(), ::tolower);
+
+    return std::regex_match(filename_extension, photo_and_video_extensions);
+}
+
 std::vector<fs::path> get_filenames_from_directory(const fs::path& directory)
 {
     std::vector<fs::path> filenames;
