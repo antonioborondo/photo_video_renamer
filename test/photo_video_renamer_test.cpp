@@ -18,7 +18,7 @@ TEST(DirectoryExists, NonExistingDirectoryDoesNotExists)
 TEST(DirectoryExists, ExistingFileIsNotDirectory)
 {
     Directory_wrapper parent_directory;
-    File_wrapper file{parent_directory, "test.txt"};
+    File_wrapper file{parent_directory, "file.txt"};
 
     ASSERT_FALSE(directory_exists(file.path()));
 }
@@ -32,26 +32,26 @@ TEST(DirectoryExists, ExistingDirectoryExists)
 
 TEST(FilenameIsPhotoOrVideo, PhotoOrVideoFilenamesInLowerAndUpperCase)
 {
-    ASSERT_TRUE(filename_is_photo_or_video("test.jpg"));
-    ASSERT_TRUE(filename_is_photo_or_video("test.JPG"));
-    ASSERT_TRUE(filename_is_photo_or_video("test.jpeg"));
-    ASSERT_TRUE(filename_is_photo_or_video("test.JPEG"));
-    ASSERT_TRUE(filename_is_photo_or_video("test.heic"));
-    ASSERT_TRUE(filename_is_photo_or_video("test.HEIC"));
-    ASSERT_TRUE(filename_is_photo_or_video("test.mov"));
-    ASSERT_TRUE(filename_is_photo_or_video("test.MOV"));
-    ASSERT_TRUE(filename_is_photo_or_video("test.mp4"));
-    ASSERT_TRUE(filename_is_photo_or_video("test.MP4"));
+    ASSERT_TRUE(filename_is_photo_or_video("file.jpg"));
+    ASSERT_TRUE(filename_is_photo_or_video("file.JPG"));
+    ASSERT_TRUE(filename_is_photo_or_video("file.jpeg"));
+    ASSERT_TRUE(filename_is_photo_or_video("file.JPEG"));
+    ASSERT_TRUE(filename_is_photo_or_video("file.heic"));
+    ASSERT_TRUE(filename_is_photo_or_video("file.HEIC"));
+    ASSERT_TRUE(filename_is_photo_or_video("file.mov"));
+    ASSERT_TRUE(filename_is_photo_or_video("file.MOV"));
+    ASSERT_TRUE(filename_is_photo_or_video("file.mp4"));
+    ASSERT_TRUE(filename_is_photo_or_video("file.MP4"));
 }
 
 TEST(FilenameIsPhotoOrVideo, NonPhotoOrVideoFilenamesInLowerAndUpperCase)
 {
-    ASSERT_FALSE(filename_is_photo_or_video("test.txt"));
-    ASSERT_FALSE(filename_is_photo_or_video("test.TXT"));
-    ASSERT_FALSE(filename_is_photo_or_video("test.pdf"));
-    ASSERT_FALSE(filename_is_photo_or_video("test.PDF"));
-    ASSERT_FALSE(filename_is_photo_or_video("test.doc"));
-    ASSERT_FALSE(filename_is_photo_or_video("test.DOC"));
+    ASSERT_FALSE(filename_is_photo_or_video("file.txt"));
+    ASSERT_FALSE(filename_is_photo_or_video("file.TXT"));
+    ASSERT_FALSE(filename_is_photo_or_video("file.pdf"));
+    ASSERT_FALSE(filename_is_photo_or_video("file.PDF"));
+    ASSERT_FALSE(filename_is_photo_or_video("file.doc"));
+    ASSERT_FALSE(filename_is_photo_or_video("file.DOC"));
 }
 
 TEST(GetFilenamesFromDirectory, NoFilenamesAreReturnedIfDirectoryIsEmpty)
@@ -65,14 +65,14 @@ TEST(GetFilenamesFromDirectory, NoFilenamesAreReturnedIfDirectoryIsEmpty)
 TEST(GetFilenamesFromDirectory, OnlyPhotosAndVideosAreReturned)
 {
     Directory_wrapper parent_directory;
-    File_wrapper file_1{parent_directory, "1.jpg"};
-    File_wrapper file_2{parent_directory, "2.jpeg"};
-    File_wrapper file_3{parent_directory, "3.heic"};
-    File_wrapper file_4{parent_directory, "4.mov"};
-    File_wrapper file_5{parent_directory, "5.mp4"};
-    File_wrapper file_6{parent_directory, "6.txt"};
-    File_wrapper file_7{parent_directory, "7.pdf"};
-    File_wrapper file_8{parent_directory, "8.doc"};
+    File_wrapper file_1{parent_directory, "file_1.jpg"};
+    File_wrapper file_2{parent_directory, "file_2.jpeg"};
+    File_wrapper file_3{parent_directory, "file_3.heic"};
+    File_wrapper file_4{parent_directory, "file_4.mov"};
+    File_wrapper file_5{parent_directory, "file_5.mp4"};
+    File_wrapper file_6{parent_directory, "file_6.txt"};
+    File_wrapper file_7{parent_directory, "file_7.pdf"};
+    File_wrapper file_8{parent_directory, "file_8.doc"};
 
     const auto filenames{get_filenames_from_directory(parent_directory.path())};
 
@@ -82,11 +82,11 @@ TEST(GetFilenamesFromDirectory, OnlyPhotosAndVideosAreReturned)
 TEST(GetFilenamesFromDirectory, FilenamesReturnedAreSorted)
 {
     Directory_wrapper parent_directory;
-    File_wrapper file_1{parent_directory, "1.jpg"};
-    File_wrapper file_2{parent_directory, "2.jpeg"};
-    File_wrapper file_3{parent_directory, "3.heic"};
-    File_wrapper file_4{parent_directory, "4.mov"};
-    File_wrapper file_5{parent_directory, "5.mp4"};
+    File_wrapper file_1{parent_directory, "file_1.jpg"};
+    File_wrapper file_2{parent_directory, "file_2.jpeg"};
+    File_wrapper file_3{parent_directory, "file_3.heic"};
+    File_wrapper file_4{parent_directory, "file_4.mov"};
+    File_wrapper file_5{parent_directory, "file_5.mp4"};
 
     const auto filenames{get_filenames_from_directory(parent_directory.path())};
 
