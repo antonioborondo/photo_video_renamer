@@ -17,11 +17,9 @@ bool directory_exists(const fs::path& directory)
 
 bool filename_is_photo_or_video(const fs::path& filename)
 {
-    const std::regex photo_and_video_extensions{".jpg|.jpeg|.heic|.mov|.mp4"};
+    const std::regex photo_and_video_extensions{".jpg|.jpeg|.heic|.mov|.mp4", std::regex_constants::icase};
 
     auto filename_extension{filename.extension().string()};
-
-    std::transform(filename_extension.begin(), filename_extension.end(), filename_extension.begin(), ::tolower);
 
     return std::regex_match(filename_extension, photo_and_video_extensions);
 }
