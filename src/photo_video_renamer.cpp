@@ -28,14 +28,11 @@ std::vector<fs::path> get_filenames_from_directory(const fs::path& directory)
 {
     std::vector<fs::path> filenames;
 
-    if(fs::exists(directory) && fs::is_directory(directory))
+    for(fs::directory_iterator directory_iterator{directory}; fs::directory_iterator{} != directory_iterator; directory_iterator++)
     {
-        for(fs::directory_iterator directory_iterator{directory}; fs::directory_iterator{} != directory_iterator; directory_iterator++)
+        if(fs::is_regular_file(directory_iterator->status()) && filename_is_photo_or_video(directory_iterator->path()))
         {
-            if(fs::is_regular_file(directory_iterator->status()) && filename_is_photo_or_video(directory_iterator->path()))
-            {
-                filenames.push_back(directory_iterator->path());
-            }
+            filenames.push_back(directory_iterator->path());
         }
     }
 

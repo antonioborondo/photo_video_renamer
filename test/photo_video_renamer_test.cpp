@@ -2,6 +2,7 @@
 
 #include "filesystem_wrappers.h"
 
+#include <gmock/gmock.h>
 #include <gtest/gtest.h>
 
 #include <cstdio>
@@ -48,4 +49,12 @@ TEST(FilenameIsPhotoOrVideo, NonPhotoOrVideoFilenamesInLowerAndUpperCase)
     ASSERT_FALSE(filename_is_photo_or_video("TEST.PDF"));
     ASSERT_FALSE(filename_is_photo_or_video("test.doc"));
     ASSERT_FALSE(filename_is_photo_or_video("TEST.DOC"));
+}
+
+TEST(GetFilenamesFromDirectory, NoFilenamesAreReturned)
+{
+    Directory_wrapper empty_directory;
+    const auto filenames{get_filenames_from_directory(empty_directory.path())};
+
+    EXPECT_THAT(filenames, ::testing::IsEmpty());
 }
