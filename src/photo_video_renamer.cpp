@@ -44,23 +44,23 @@ std::vector<fs::path> get_filenames_from_directory(const fs::path& directory)
     return filenames;
 }
 
-std::vector<fs::path> get_new_filenames(const std::vector<fs::path>& filenames, const std::string& prefix = "")
+std::vector<fs::path> generate_new_filenames(const std::vector<fs::path>& filenames, const std::string& prefix)
 {
-    std::vector<fs::path> new_filenames;
-
     const auto number_digits_filename{std::to_string(std::to_string(filenames.size()).length())};
 
-    for (auto i = 0; i < filenames.size(); i++)
+    std::vector<fs::path> new_filenames;
+
+    for(size_t i{}; i < filenames.size(); ++i)
     {
-        const auto filename = filenames.at(i);
+        const auto filename{filenames.at(i)};
 
-        const auto new_filename_number{fmt::format("{:0" + number_digits_filename + "d}", i + 1)};
+        const auto new_filename_number{fmt::format("{:0" + number_digits_filename + "}", i + 1)};
 
-        auto new_filename_extension{ filename.extension().string() };
+        auto new_filename_extension{filename.extension().string()};
 
         std::transform(new_filename_extension.begin(), new_filename_extension.end(), new_filename_extension.begin(), ::tolower);
 
-        auto new_filename = filename.parent_path() / fs::path{ prefix + new_filename_number + new_filename_extension };
+        const auto new_filename{filename.parent_path() / fs::path{prefix + new_filename_number + new_filename_extension}};
 
         new_filenames.push_back(new_filename);
     }
@@ -103,7 +103,7 @@ bool rename_photos_and_videos_from_directory(const fs::path& directory)
 {
     auto filenames{get_filenames_from_directory(directory)};
 
-    auto new_filenames{get_new_filenames(filenames)};
+    auto new_filenames{generate_new_filenames(filenames)};
 
     const auto new_filenames_already_exist{check_if_new_filenames_already_exist(filenames, new_filenames)};
     if(new_filenames_already_exist)
@@ -113,7 +113,7 @@ bool rename_photos_and_videos_from_directory(const fs::path& directory)
         bool temp_filenames_already_exist{};
         do
         {
-            temp_filenames = get_new_filenames(filenames, "temp" + std::to_string(i++));
+            temp_filenames = generate_new_filenames(filenames, "temp" + std::to_string(i++));
 
             temp_filenames_already_exist = check_if_new_filenames_already_exist(filenames, temp_filenames);
 
