@@ -8,6 +8,8 @@
 #include <cstdio>
 #include <filesystem>
 
+namespace fs = std::filesystem;
+
 TEST(DirectoryExists, NonExistingDirectoryDoesNotExists)
 {
     const std::filesystem::path non_existing_directory{std::tmpnam(nullptr)};
@@ -93,33 +95,18 @@ TEST(GetFilenamesFromDirectory, FilenamesReturnedAreSorted)
     ASSERT_THAT(filenames, testing::ElementsAre(file_1.path(), file_2.path(), file_3.path(), file_4.path(), file_5.path()));
 }
 
-TEST(GenerateNewFilenames, Generate)
+TEST(GenerateNewFilenames, NumberOfInputFilenamesEqualToNumberOfGeneratedFilenames)
 {
-    std::vector<std::filesystem::path> filenames;
-    filenames.emplace_back("parent_directory/file_1.jpg");
-    filenames.emplace_back("parent_directory/file_2.jpg");
-    filenames.emplace_back("parent_directory/file_3.jpg");
-    filenames.emplace_back("parent_directory/file_4.jpg");
-    filenames.emplace_back("parent_directory/file_5.jpg");
-    filenames.emplace_back("parent_directory/file_6.jpg");
-    filenames.emplace_back("parent_directory/file_7.jpg");
-    filenames.emplace_back("parent_directory/file_8.jpg");
-    filenames.emplace_back("parent_directory/file_9.jpg");
-    filenames.emplace_back("parent_directory/file_10.jpg");
+    for(int i{}; i < 10; ++i)
+    {
+        ASSERT_THAT(generate_new_filenames(std::vector<fs::path>(i)), testing::SizeIs(i));
+    }
+}
 
-    const auto new_filenames{generate_new_filenames(filenames)};
-
-    std::vector<std::filesystem::path> expected_filenames;
-    expected_filenames.emplace_back("parent_directory/01.jpg");
-    expected_filenames.emplace_back("parent_directory/02.jpg");
-    expected_filenames.emplace_back("parent_directory/03.jpg");
-    expected_filenames.emplace_back("parent_directory/04.jpg");
-    expected_filenames.emplace_back("parent_directory/05.jpg");
-    expected_filenames.emplace_back("parent_directory/06.jpg");
-    expected_filenames.emplace_back("parent_directory/07.jpg");
-    expected_filenames.emplace_back("parent_directory/08.jpg");
-    expected_filenames.emplace_back("parent_directory/09.jpg");
-    expected_filenames.emplace_back("parent_directory/10.jpg");
-
-    ASSERT_EQ(expected_filenames, new_filenames);
+TEST(GenerateNewFilenames, NumberOfLeadingZerosIsCorrect)
+{
+    ASSERT_THAT(generate_new_filenames(std::vector<fs::path>(9)), testing::IsSupersetOf({fs::path{"1"}, fs::path{"9"}}));
+    ASSERT_THAT(generate_new_filenames(std::vector<fs::path>(99)), testing::IsSupersetOf({fs::path{"01"}, fs::path{"99"}}));
+    ASSERT_THAT(generate_new_filenames(std::vector<fs::path>(999)), testing::IsSupersetOf({fs::path{"001"}, fs::path{"010"}, fs::path{"999"}}));
+    ASSERT_THAT(generate_new_filenames(std::vector<fs::path>(9999)), testing::IsSupersetOf({fs::path{"0001"}, fs::path{"0010"}, fs::path{"0100"}, fs::path{"9999"}}));
 }
