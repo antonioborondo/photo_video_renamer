@@ -84,13 +84,13 @@ bool check_if_new_filenames_already_exist(const std::vector<fs::path>& filenames
 
 bool rename_filenames(const std::vector<fs::path>& filenames, const std::vector<fs::path>& new_filenames)
 {
-    for (int i{}; i < filenames.size(); i++)
+    for(size_t i{}; i < filenames.size(); ++i)
     {
         try
         {
             fs::rename(filenames.at(i), new_filenames.at(i));
         }
-        catch (const fs::filesystem_error&)
+        catch(const fs::filesystem_error&)
         {
             return false;
         }
