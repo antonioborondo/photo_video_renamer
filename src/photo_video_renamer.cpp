@@ -46,7 +46,7 @@ std::vector<fs::path> get_filenames_from_directory(const fs::path& directory)
 
 std::vector<fs::path> generate_new_filenames(const std::vector<fs::path>& filenames, const std::string& prefix)
 {
-    const auto number_digits_filename{std::to_string(std::to_string(filenames.size()).length())};
+    const auto number_digits_filename{std::to_string(filenames.size()).length()};
 
     std::vector<fs::path> new_filenames;
 
@@ -54,7 +54,7 @@ std::vector<fs::path> generate_new_filenames(const std::vector<fs::path>& filena
     {
         const auto filename{filenames.at(i)};
 
-        const auto new_filename_number{fmt::format("{:0" + number_digits_filename + "}", i + 1)};
+        const auto new_filename_number{fmt::format("{:0{}}", i + 1, number_digits_filename)};
 
         auto new_filename_extension{filename.extension().string()};
 
