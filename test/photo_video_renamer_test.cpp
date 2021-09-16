@@ -123,3 +123,10 @@ TEST(GenerateNewFilenames, ParentDirectoryIsKept)
 
     ASSERT_EQ(filenames.at(0).parent_path(), new_filenames.at(0).parent_path());
 }
+
+TEST(GenerateNewFilenames, PrefixIsAddedToTheFilename)
+{
+    constexpr auto prefix{"test_"};
+
+    ASSERT_THAT(generate_new_filenames(std::vector<fs::path>(1), prefix), testing::ElementsAre(fs::path{"test_1"}));
+}
