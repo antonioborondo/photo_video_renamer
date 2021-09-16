@@ -11,4 +11,6 @@ std::vector<std::filesystem::path> get_filenames_from_directory(const std::files
 
 std::vector<std::filesystem::path> generate_new_filenames(const std::vector<std::filesystem::path>& filenames, const std::string& prefix = "");
 
+bool check_if_new_filenames_already_exist(const std::vector<std::filesystem::path>& filenames, const std::vector<std::filesystem::path>& new_filenames);
+
 bool rename_photos_and_videos_from_directory(const std::filesystem::path& directory);

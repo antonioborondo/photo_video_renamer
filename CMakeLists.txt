@@ -15,6 +15,7 @@ include(${CONAN_CMAKE})
 
 conan_cmake_run(
     REQUIRES
+    boost/1.77.0
     fmt/8.0.1
     gtest/1.11.0
     BASIC_SETUP CMAKE_TARGETS
@@ -32,6 +33,7 @@ target_include_directories(photo_video_renamer_common
 
 target_link_libraries(photo_video_renamer_common
     PRIVATE
+    CONAN_PKG::boost
     CONAN_PKG::fmt
     natural_sort
 )

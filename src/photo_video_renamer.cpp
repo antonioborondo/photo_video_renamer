@@ -1,5 +1,6 @@
 #include "photo_video_renamer.h"
 
+#include <boost/algorithm/string.hpp>
 #include <fmt/format.h>
 #include <natural_sort/natural_sort.hpp>
 
@@ -70,16 +71,13 @@ std::vector<fs::path> generate_new_filenames(const std::vector<fs::path>& filena
 
 bool check_if_new_filenames_already_exist(const std::vector<fs::path>& filenames, const std::vector<fs::path>& new_filenames)
 {
-    for (const fs::path& filename : filenames)
-    {       
-        for (const fs::path& new_filename : new_filenames)
+    return std::any_of(filenames.begin(), filenames.end(), [&](const fs::path& filename)
+    {
+        return (std::find_if(new_filenames.begin(), new_filenames.end(), [&](const fs::path& new_filename)
         {
-            if (filename.stem() == new_filename.stem())
-                return true;
-        }
-    }
-
-    return false;
+            return boost::iequals(filename.filename().wstring(), new_filename.filename().wstring());
+        }) != new_filenames.end());
+    });
 }
 
 bool rename_filenames(const std::vector<fs::path>& filenames, const std::vector<fs::path>& new_filenames)

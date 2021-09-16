@@ -130,3 +130,27 @@ TEST(GenerateNewFilenames, PrefixIsAddedToTheFilename)
 
     ASSERT_THAT(generate_new_filenames(std::vector<fs::path>(1), prefix), testing::ElementsAre(fs::path{"test_1"}));
 }
+
+TEST(CheckIfNewFilenamesAlreadyExist, OneFilenameAlreadyExists)
+{
+    const std::vector<fs::path> filenames{fs::path{"1"}, fs::path{"2"}, fs::path{"3"}};
+    const std::vector<fs::path> new_filenames{fs::path{"a"}, fs::path{"2"}, fs::path{"c"}};
+
+    ASSERT_TRUE(check_if_new_filenames_already_exist(filenames, new_filenames));
+}
+
+TEST(CheckIfNewFilenamesAlreadyExist, OneFilenameWithDifferentCaseAlreadyExists)
+{
+    const std::vector<fs::path> filenames{fs::path{"a"}, fs::path{"b"}, fs::path{"c"}};
+    const std::vector<fs::path> new_filenames{fs::path{"1"}, fs::path{"B"}, fs::path{"3"}};
+
+    ASSERT_TRUE(check_if_new_filenames_already_exist(filenames, new_filenames));
+}
+
+TEST(CheckIfNewFilenamesAlreadyExist, NoFilenameExists)
+{
+    const std::vector<fs::path> filenames{fs::path{"1"}, fs::path{"2"}, fs::path{"3"}};
+    const std::vector<fs::path> new_filenames{fs::path{"a"}, fs::path{"b"}, fs::path{"c"}};
+
+    ASSERT_FALSE(check_if_new_filenames_already_exist(filenames, new_filenames));
+}
