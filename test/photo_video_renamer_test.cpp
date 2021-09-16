@@ -95,7 +95,7 @@ TEST(GetFilenamesFromDirectory, FilenamesReturnedAreSorted)
     ASSERT_THAT(filenames, testing::ElementsAre(file_1.path(), file_2.path(), file_3.path(), file_4.path(), file_5.path()));
 }
 
-TEST(GenerateNewFilenames, NumberOfInputFilenamesEqualToNumberOfGeneratedFilenames)
+TEST(GenerateNewFilenames, NumberOfInputFilenamesIsEqualToNumberOfGeneratedFilenames)
 {
     for(int i{}; i < 10; ++i)
     {
@@ -109,4 +109,9 @@ TEST(GenerateNewFilenames, NumberOfLeadingZerosIsCorrect)
     ASSERT_THAT(generate_new_filenames(std::vector<fs::path>(99)), testing::IsSupersetOf({fs::path{"01"}, fs::path{"99"}}));
     ASSERT_THAT(generate_new_filenames(std::vector<fs::path>(999)), testing::IsSupersetOf({fs::path{"001"}, fs::path{"010"}, fs::path{"999"}}));
     ASSERT_THAT(generate_new_filenames(std::vector<fs::path>(9999)), testing::IsSupersetOf({fs::path{"0001"}, fs::path{"0010"}, fs::path{"0100"}, fs::path{"9999"}}));
+}
+
+TEST(GenerateNewFilenames, ExtensionIsLowerCase)
+{
+    ASSERT_THAT(generate_new_filenames({fs::path{"file.TXT"}}), testing::ElementsAre(fs::path{"1.txt"}));
 }
