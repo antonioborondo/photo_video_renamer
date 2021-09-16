@@ -115,3 +115,11 @@ TEST(GenerateNewFilenames, ExtensionIsLowerCase)
 {
     ASSERT_THAT(generate_new_filenames({fs::path{"file.TXT"}}), testing::ElementsAre(fs::path{"1.txt"}));
 }
+
+TEST(GenerateNewFilenames, ParentDirectoryIsKept)
+{
+    const std::vector<fs::path> filenames{fs::path{"C:/1/2/3/4/5/file.txt"}};
+    const auto new_filenames{generate_new_filenames(filenames)};
+
+    ASSERT_EQ(filenames.at(0).parent_path(), new_filenames.at(0).parent_path());
+}
