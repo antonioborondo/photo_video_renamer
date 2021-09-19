@@ -12,7 +12,7 @@ namespace fs = std::filesystem;
 
 TEST(DirectoryExists, NonExistingDirectoryDoesNotExists)
 {
-    const std::filesystem::path non_existing_directory{std::tmpnam(nullptr)};
+    const fs::path non_existing_directory{std::tmpnam(nullptr)};
 
     ASSERT_FALSE(directory_exists(non_existing_directory));
 }
