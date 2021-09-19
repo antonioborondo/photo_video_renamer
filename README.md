@@ -17,6 +17,7 @@ Tool to rename all the photos and videos in a directory from the context menu or
 - Filename extensions are changed to lowercase.
 
 ## Libraries
+- Boost: https://boost.org
 - fmt: https://github.com/fmtlib/fmt
 - GoogleTest: https://github.com/google/googletest
 - NaturalSort: https://github.com/scopeInfinity/NaturalSort
