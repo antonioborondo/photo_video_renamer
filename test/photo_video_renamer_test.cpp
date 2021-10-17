@@ -158,3 +158,39 @@ TEST(CheckIfNewFilenamesAlreadyExist, NoFilenameExists)
 
     ASSERT_FALSE(check_if_new_filenames_already_exist(filenames, new_filenames));
 }
+
+TEST(RenameFilenames, FilenameDoesNotExist)
+{
+    Directory_wrapper parent_directory;
+    fs::path non_existing_filename{parent_directory.path() / "file.jpg"};
+    fs::path new_filename{parent_directory.path() / "1.jpg"};
+
+    ASSERT_FALSE(rename_filenames({non_existing_filename}, {new_filename}));
+}
+
+TEST(RenameFilenames, FilenameIsRenamed)
+{
+    Directory_wrapper parent_directory;
+    File_wrapper file{parent_directory, "file.jpg"};
+    fs::path new_filename{parent_directory.path() / "1.jpg"};
+
+    ASSERT_TRUE(rename_filenames({file.path()}, {new_filename}));
+
+    auto filenames = get_filenames_from_directory(parent_directory.path());
+
+    ASSERT_THAT(filenames, testing::Contains(new_filename));
+}
+
+TEST(RenamePhotosAndVideosFromDirectory, PhotosAndVideosAreRenamed)
+{
+    Directory_wrapper parent_directory;
+    File_wrapper file_1{parent_directory, "a.jpg"};
+    File_wrapper file_2{parent_directory, "2.jpg"};
+    File_wrapper file_3{parent_directory, "c.jpg"};
+    File_wrapper file_4{parent_directory, "4.jpg"};
+    File_wrapper file_5{parent_directory, "e.jpg"};
+
+    ASSERT_TRUE(rename_photos_and_videos_from_directory(parent_directory.path()));
+
+    ASSERT_THAT(get_filenames_from_directory(parent_directory.path()), testing::ElementsAre(fs::path{parent_directory.path() / "1.jpg"}, fs::path{parent_directory.path() / "2.jpg"}, fs::path{parent_directory.path() / "3.jpg"}, fs::path{parent_directory.path() / "4.jpg"}, fs::path{parent_directory.path() / "5.jpg"}));
+}
