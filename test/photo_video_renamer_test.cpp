@@ -34,16 +34,18 @@ TEST(DirectoryExists, ExistingDirectoryExists)
 
 TEST(FilenameIsPhotoOrVideo, PhotoOrVideoFilenamesInLowerAndUpperCase)
 {
-    ASSERT_TRUE(filename_is_photo_or_video("file.jpg"));
-    ASSERT_TRUE(filename_is_photo_or_video("file.JPG"));
-    ASSERT_TRUE(filename_is_photo_or_video("file.jpeg"));
-    ASSERT_TRUE(filename_is_photo_or_video("file.JPEG"));
     ASSERT_TRUE(filename_is_photo_or_video("file.heic"));
     ASSERT_TRUE(filename_is_photo_or_video("file.HEIC"));
+    ASSERT_TRUE(filename_is_photo_or_video("file.jpeg"));
+    ASSERT_TRUE(filename_is_photo_or_video("file.JPEG"));
+    ASSERT_TRUE(filename_is_photo_or_video("file.jpg"));
+    ASSERT_TRUE(filename_is_photo_or_video("file.JPG"));
     ASSERT_TRUE(filename_is_photo_or_video("file.mov"));
     ASSERT_TRUE(filename_is_photo_or_video("file.MOV"));
     ASSERT_TRUE(filename_is_photo_or_video("file.mp4"));
     ASSERT_TRUE(filename_is_photo_or_video("file.MP4"));
+    ASSERT_TRUE(filename_is_photo_or_video("file.png"));
+    ASSERT_TRUE(filename_is_photo_or_video("file.PNG"));
 }
 
 TEST(FilenameIsPhotoOrVideo, NonPhotoOrVideoFilenamesInLowerAndUpperCase)
@@ -67,32 +69,34 @@ TEST(GetFilenamesFromDirectory, NoFilenamesAreReturnedIfDirectoryIsEmpty)
 TEST(GetFilenamesFromDirectory, OnlyPhotosAndVideosAreReturned)
 {
     Directory_wrapper parent_directory;
-    File_wrapper file_1{parent_directory, "file_1.jpg"};
+    File_wrapper file_1{parent_directory, "file_1.heic"};
     File_wrapper file_2{parent_directory, "file_2.jpeg"};
-    File_wrapper file_3{parent_directory, "file_3.heic"};
+    File_wrapper file_3{parent_directory, "file_3.jpg"};
     File_wrapper file_4{parent_directory, "file_4.mov"};
     File_wrapper file_5{parent_directory, "file_5.mp4"};
-    File_wrapper file_6{parent_directory, "file_6.txt"};
-    File_wrapper file_7{parent_directory, "file_7.pdf"};
-    File_wrapper file_8{parent_directory, "file_8.doc"};
+    File_wrapper file_6{parent_directory, "file_6.png"};
+    File_wrapper file_7{parent_directory, "file_7.txt"};
+    File_wrapper file_8{parent_directory, "file_8.pdf"};
+    File_wrapper file_9{parent_directory, "file_9.doc"};
 
     const auto filenames{get_filenames_from_directory(parent_directory.path())};
 
-    ASSERT_THAT(filenames, testing::UnorderedElementsAre(file_1.path(), file_2.path(), file_3.path(), file_4.path(), file_5.path()));
+    ASSERT_THAT(filenames, testing::UnorderedElementsAre(file_1.path(), file_2.path(), file_3.path(), file_4.path(), file_5.path(), file_6.path()));
 }
 
 TEST(GetFilenamesFromDirectory, FilenamesReturnedAreSorted)
 {
     Directory_wrapper parent_directory;
-    File_wrapper file_1{parent_directory, "file_1.jpg"};
+    File_wrapper file_1{parent_directory, "file_1.heic"};
     File_wrapper file_2{parent_directory, "file_2.jpeg"};
-    File_wrapper file_3{parent_directory, "file_3.heic"};
+    File_wrapper file_3{parent_directory, "file_3.jpg"};
     File_wrapper file_4{parent_directory, "file_4.mov"};
     File_wrapper file_5{parent_directory, "file_5.mp4"};
+    File_wrapper file_6{parent_directory, "file_6.png"};
 
     const auto filenames{get_filenames_from_directory(parent_directory.path())};
 
-    ASSERT_THAT(filenames, testing::ElementsAre(file_1.path(), file_2.path(), file_3.path(), file_4.path(), file_5.path()));
+    ASSERT_THAT(filenames, testing::ElementsAre(file_1.path(), file_2.path(), file_3.path(), file_4.path(), file_5.path(), file_6.path()));
 }
 
 TEST(GenerateNewFilenames, NumberOfInputFilenamesIsEqualToNumberOfGeneratedFilenames)
