@@ -15,9 +15,27 @@ include(${CONAN_CMAKE})
 
 conan_cmake_run(
     REQUIRES
+    boost/1.77.0
     fmt/8.0.1
+    gtest/1.11.0
     BASIC_SETUP CMAKE_TARGETS
     BUILD missing
+)
+
+add_library(photo_video_renamer_common STATIC
+    src/photo_video_renamer.cpp
+)
+
+target_include_directories(photo_video_renamer_common
+    PUBLIC
+    src
+)
+
+target_link_libraries(photo_video_renamer_common
+    PRIVATE
+    CONAN_PKG::boost
+    CONAN_PKG::fmt
+    natural_sort
 )
 
 add_executable(photo_video_renamer
@@ -26,9 +44,22 @@ add_executable(photo_video_renamer
 
 target_link_libraries(photo_video_renamer
     PRIVATE
-    CONAN_PKG::fmt
-    natural_sort
+    photo_video_renamer_common
 )
+
+add_executable(photo_video_renamer_test
+    test/photo_video_renamer_test.cpp
+)
+
+target_link_libraries(photo_video_renamer_test
+    PRIVATE
+    CONAN_PKG::gtest
+    photo_video_renamer_common
+)
+
+enable_testing()
+
+add_test(NAME photo_video_renamer_test COMMAND photo_video_renamer_test)
 
 add_subdirectory(lib)
 
