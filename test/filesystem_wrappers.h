@@ -9,7 +9,7 @@ class Filesystem_wrapper
 protected:
     std::filesystem::path m_path;
 
-    Filesystem_wrapper(){}
+    Filesystem_wrapper() = default;
 
 public:
     ~Filesystem_wrapper()
