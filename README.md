@@ -12,7 +12,7 @@ Tool to rename all the photos and videos in a directory from the context menu or
 
 
 ## Features
-- Most popular photo and video formats supported: jpg, jpeg, heic, mov and mp4.
+- Most popular photo and video formats supported: heic, jpeg, jpg, mov, mp4 and png.
 - Filename numbers are led with zeros so that all filenames in the same directory are the same length.
 - Filename extensions are changed to lowercase.
 
