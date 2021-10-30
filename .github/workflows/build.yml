@@ -25,7 +25,7 @@ jobs:
         run: ctest -C Release -V
       - name: Pack
         working-directory: build
-        run: cpack -G "NSIS"
+        run: rm "C:\ProgramData\Chocolatey\bin\cpack.exe" && cpack -G "NSIS"
       - name: Publish
         uses: actions/upload-artifact@v2
         with:
