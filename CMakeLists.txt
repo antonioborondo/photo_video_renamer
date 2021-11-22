@@ -17,7 +17,7 @@ conan_cmake_run(
     REQUIRES
     boost/1.77.0
     fmt/8.0.1
-    gtest/1.11.0
+    gtest/1.10.0
     BASIC_SETUP CMAKE_TARGETS
     BUILD missing
 )
