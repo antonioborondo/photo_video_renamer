@@ -11,7 +11,7 @@ Tool to rename all the photos and videos in a directory from the context menu or
 ![Screenshot](command_line_example.gif?raw=true)
 
 ## Features
-- Most popular photo and video formats supported: heic, jpeg, jpg, mov, mp4 and png.
+- Most popular photo and video formats supported: avi, heic, jpeg, jpg, mov, mp4 and png.
 - Filename numbers are led with zeros so that all filenames in the same directory are the same length.
 - Filename extensions are changed to lowercase.
 
