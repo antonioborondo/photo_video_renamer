@@ -68,7 +68,7 @@ install(TARGETS photo_video_renamer DESTINATION bin)
 set(VC_REDISTRIBUTABLE ${CMAKE_BINARY_DIR}/vc_redist.x64.exe)
 
 if(NOT EXISTS ${VC_REDISTRIBUTABLE})
-    message(STATUS "Downloading Microsoft Visual C++ Redistributable package from https://aka.ms/vs/17/release/vc_redist.x64.exe")
+    message(STATUS "Downloading Microsoft Visual C++ Redistributable from https://aka.ms/vs/17/release/vc_redist.x64.exe")
     file(DOWNLOAD "https://aka.ms/vs/17/release/vc_redist.x64.exe" ${VC_REDISTRIBUTABLE})
 endif()
 
