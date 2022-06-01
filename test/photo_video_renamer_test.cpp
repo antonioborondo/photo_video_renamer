@@ -36,6 +36,8 @@ TEST(FilenameIsPhotoOrVideo, PhotoOrVideoFilenamesInLowerAndUpperCase)
 {
     ASSERT_TRUE(filename_is_photo_or_video("file.avi"));
     ASSERT_TRUE(filename_is_photo_or_video("file.AVI"));
+    ASSERT_TRUE(filename_is_photo_or_video("file.bmp"));
+    ASSERT_TRUE(filename_is_photo_or_video("file.BMP"));
     ASSERT_TRUE(filename_is_photo_or_video("file.heic"));
     ASSERT_TRUE(filename_is_photo_or_video("file.HEIC"));
     ASSERT_TRUE(filename_is_photo_or_video("file.jpeg"));
@@ -71,36 +73,38 @@ TEST(GetFilenamesFromDirectory, NoFilenamesAreReturnedIfDirectoryIsEmpty)
 TEST(GetFilenamesFromDirectory, OnlyPhotosAndVideosAreReturned)
 {
     Directory_wrapper parent_directory;
-    File_wrapper file_0{parent_directory, "file_0.avi"};
-    File_wrapper file_1{parent_directory, "file_1.heic"};
-    File_wrapper file_2{parent_directory, "file_2.jpeg"};
-    File_wrapper file_3{parent_directory, "file_3.jpg"};
-    File_wrapper file_4{parent_directory, "file_4.mov"};
-    File_wrapper file_5{parent_directory, "file_5.mp4"};
-    File_wrapper file_6{parent_directory, "file_6.png"};
-    File_wrapper file_7{parent_directory, "file_7.txt"};
-    File_wrapper file_8{parent_directory, "file_8.pdf"};
-    File_wrapper file_9{parent_directory, "file_9.doc"};
+    File_wrapper file_01{parent_directory, "file_01.avi"};
+    File_wrapper file_02{parent_directory, "file_02.bmp"};
+    File_wrapper file_03{parent_directory, "file_03.heic"};
+    File_wrapper file_04{parent_directory, "file_04.jpeg"};
+    File_wrapper file_05{parent_directory, "file_05.jpg"};
+    File_wrapper file_06{parent_directory, "file_06.mov"};
+    File_wrapper file_07{parent_directory, "file_07.mp4"};
+    File_wrapper file_08{parent_directory, "file_08.png"};
+    File_wrapper file_09{parent_directory, "file_09.txt"};
+    File_wrapper file_10{parent_directory, "file_10.pdf"};
+    File_wrapper file_11{parent_directory, "file_11.doc"};
 
     const auto filenames{get_filenames_from_directory(parent_directory.path())};
 
-    ASSERT_THAT(filenames, testing::UnorderedElementsAre(file_0.path(), file_1.path(), file_2.path(), file_3.path(), file_4.path(), file_5.path(), file_6.path()));
+    ASSERT_THAT(filenames, testing::UnorderedElementsAre(file_01.path(), file_02.path(), file_03.path(), file_04.path(), file_05.path(), file_06.path(), file_07.path(), file_08.path()));
 }
 
 TEST(GetFilenamesFromDirectory, FilenamesReturnedAreSorted)
 {
     Directory_wrapper parent_directory;
-    File_wrapper file_0{parent_directory, "file_0.avi"};
-    File_wrapper file_1{parent_directory, "file_1.heic"};
-    File_wrapper file_2{parent_directory, "file_2.jpeg"};
-    File_wrapper file_3{parent_directory, "file_3.jpg"};
-    File_wrapper file_4{parent_directory, "file_4.mov"};
-    File_wrapper file_5{parent_directory, "file_5.mp4"};
-    File_wrapper file_6{parent_directory, "file_6.png"};
+    File_wrapper file_1{parent_directory, "file_1.avi"};
+    File_wrapper file_2{parent_directory, "file_2.bmp"};
+    File_wrapper file_3{parent_directory, "file_3.heic"};
+    File_wrapper file_4{parent_directory, "file_4.jpeg"};
+    File_wrapper file_5{parent_directory, "file_5.jpg"};
+    File_wrapper file_6{parent_directory, "file_6.mov"};
+    File_wrapper file_7{parent_directory, "file_7.mp4"};
+    File_wrapper file_8{parent_directory, "file_8.png"};
 
     const auto filenames{get_filenames_from_directory(parent_directory.path())};
 
-    ASSERT_THAT(filenames, testing::ElementsAre(file_0.path(), file_1.path(), file_2.path(), file_3.path(), file_4.path(), file_5.path(), file_6.path()));
+    ASSERT_THAT(filenames, testing::ElementsAre(file_1.path(), file_2.path(), file_3.path(), file_4.path(), file_5.path(), file_6.path(), file_7.path(), file_8.path()));
 }
 
 TEST(GenerateNewFilenames, NumberOfInputFilenamesIsEqualToNumberOfGeneratedFilenames)
