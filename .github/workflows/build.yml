@@ -29,4 +29,4 @@ jobs:
       - name: Publish
         uses: actions/upload-artifact@v2
         with:
-          path: build/*.exe
+          path: build/photo_video_renamer*.exe
