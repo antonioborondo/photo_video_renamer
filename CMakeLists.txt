@@ -79,7 +79,7 @@ set(CPACK_RESOURCE_FILE_LICENSE ${CMAKE_CURRENT_SOURCE_DIR}/LICENSE.md)
 
 SET(CPACK_NSIS_EXTRA_INSTALL_COMMANDS
     "
-    ExecWait '$INSTDIR\\\\bin\\\\vc_redist.x64.exe'
+    ExecWait '$INSTDIR\\\\bin\\\\vc_redist.x64.exe /install /quiet /norestart'
     WriteRegStr HKCR 'Directory\\\\shell\\\\photo_video_renamer' '' 'Rename photos and videos'
     WriteRegStr HKCR 'Directory\\\\shell\\\\photo_video_renamer' 'Icon' '%SYSTEMROOT%\\\\System32\\\\shell32.dll,328'
     WriteRegStr HKCR 'Directory\\\\shell\\\\photo_video_renamer\\\\command' '' '$INSTDIR\\\\bin\\\\photo_video_renamer.exe %1'
