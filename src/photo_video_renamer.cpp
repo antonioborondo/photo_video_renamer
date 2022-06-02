@@ -38,9 +38,9 @@ std::vector<fs::path> get_filenames_from_directory(const fs::path& directory)
     }
 
     std::sort(filenames.begin(), filenames.end(), [](const fs::path& filename_1, const fs::path& filename_2)
-    {
-        return SI::natural::compare<std::wstring>(filename_1.filename().wstring(), filename_2.filename().wstring());
-    });
+        {
+            return SI::natural::compare<std::wstring>(filename_1.filename().wstring(), filename_2.filename().wstring());
+        });
 
     return filenames;
 }
@@ -72,12 +72,12 @@ std::vector<fs::path> generate_new_filenames(const std::vector<fs::path>& filena
 bool check_if_new_filenames_already_exist(const std::vector<fs::path>& filenames, const std::vector<fs::path>& new_filenames)
 {
     return std::any_of(filenames.begin(), filenames.end(), [&](const fs::path& filename)
-    {
-        return (std::find_if(new_filenames.begin(), new_filenames.end(), [&](const fs::path& new_filename)
         {
-            return boost::iequals(filename.filename().wstring(), new_filename.filename().wstring());
-        }) != new_filenames.end());
-    });
+            return (std::find_if(new_filenames.begin(), new_filenames.end(), [&](const fs::path& new_filename)
+                        {
+                            return boost::iequals(filename.filename().wstring(), new_filename.filename().wstring());
+                        }) != new_filenames.end());
+        });
 }
 
 bool rename_filenames(const std::vector<fs::path>& filenames, const std::vector<fs::path>& new_filenames)
@@ -114,9 +114,9 @@ bool rename_photos_and_videos_from_directory(const fs::path& directory)
             temp_filenames = generate_new_filenames(filenames, "temp" + std::to_string(i++));
 
             temp_filenames_already_exist = check_if_new_filenames_already_exist(filenames, temp_filenames);
+        }
+        while(temp_filenames_already_exist);
 
-        } while (temp_filenames_already_exist);
-        
         rename_filenames(filenames, temp_filenames);
 
         filenames = get_filenames_from_directory(directory);

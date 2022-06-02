@@ -23,7 +23,7 @@ public:
     }
 };
 
-class Directory_wrapper : public Filesystem_wrapper
+class Directory_wrapper: public Filesystem_wrapper
 {
 public:
     Directory_wrapper()
@@ -33,7 +33,7 @@ public:
     }
 };
 
-class File_wrapper : public Filesystem_wrapper
+class File_wrapper: public Filesystem_wrapper
 {
 public:
     File_wrapper(const Directory_wrapper& parent_directory, const std::filesystem::path& filename)
