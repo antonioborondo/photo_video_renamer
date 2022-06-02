@@ -1,6 +1,5 @@
-#include "photo_video_renamer.h"
-
 #include "filesystem_wrappers.h"
+#include "photo_video_renamer.h"
 
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
