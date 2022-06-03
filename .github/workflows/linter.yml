@@ -1,0 +1,14 @@
+name: Linter
+
+on: push
+
+jobs:
+  clang-format:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+    - name: Lint
+      uses: DoozyX/clang-format-lint-action@v0.13
+      with:
+        clangFormatVersion: 13
