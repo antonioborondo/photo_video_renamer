@@ -15,7 +15,7 @@ int main(int argc, const char** argv)
     auto directory{std::filesystem::current_path()};
     if(2 == argc)
     {
-    directory = argv[1];
+        directory = argv[1];
     }
 
     if(!directory_exists(directory))
