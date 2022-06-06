@@ -1,5 +1,5 @@
 # photo_video_renamer
-[![Linter](https://github.com/antonioborondo/photo_video_renamer/actions/workflows/linter.yml/badge.svg)](https://github.com/antonioborondo/photo_video_renamer/actions/workflows/linter.yml) [![build](https://github.com/antonioborondo/photo_video_renamer/actions/workflows/build.yml/badge.svg)](https://github.com/antonioborondo/photo_video_renamer/actions/workflows/build.yml)
+[![CI](https://github.com/antonioborondo/photo_video_renamer/actions/workflows/ci.yml/badge.svg)](https://github.com/antonioborondo/photo_video_renamer/actions/workflows/ci.yml)
 
 ## Description
 Tool to rename all the photos and videos in a directory from the context menu or from the command line.
