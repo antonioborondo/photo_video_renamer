@@ -22,7 +22,7 @@ jobs:
         clangFormatVersion: 13
   build:
     needs: clang-format
-    runs-on: windows-2019
+    runs-on: windows-2022
     steps:
       - name: Install Conan
         run: pip install conan
