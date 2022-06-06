@@ -1,4 +1,4 @@
-﻿name: build
+﻿name: CI
 
 on:
   push:
@@ -9,7 +9,17 @@ on:
     - cron: '0 0 * * *'
 
 jobs:
+  clang-format:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+    - name: Lint
+      uses: DoozyX/clang-format-lint-action@v0.13
+      with:
+        clangFormatVersion: 13
   build:
+    needs: clang-format
     runs-on: windows-2019
     steps:
       - name: Install Conan
