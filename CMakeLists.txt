@@ -8,7 +8,7 @@ set(CONAN_CMAKE ${CMAKE_BINARY_DIR}/conan.cmake)
 
 if(NOT EXISTS ${CONAN_CMAKE})
     message(STATUS "Downloading conan.cmake from https://github.com/conan-io/cmake-conan")
-    file(DOWNLOAD "https://raw.githubusercontent.com/conan-io/cmake-conan/v0.16.1/conan.cmake" ${CONAN_CMAKE})
+    file(DOWNLOAD "https://raw.githubusercontent.com/conan-io/cmake-conan/0.18.1/conan.cmake" ${CONAN_CMAKE})
 endif()
 
 include(${CONAN_CMAKE})
