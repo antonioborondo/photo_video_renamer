@@ -8,19 +8,29 @@ set(CONAN_CMAKE ${CMAKE_BINARY_DIR}/conan.cmake)
 
 if(NOT EXISTS ${CONAN_CMAKE})
     message(STATUS "Downloading conan.cmake from https://github.com/conan-io/cmake-conan")
-    file(DOWNLOAD "https://raw.githubusercontent.com/conan-io/cmake-conan/v0.16.1/conan.cmake" ${CONAN_CMAKE})
+    file(DOWNLOAD "https://raw.githubusercontent.com/conan-io/cmake-conan/0.18.1/conan.cmake" ${CONAN_CMAKE} TLS_VERIFY ON)
 endif()
 
 include(${CONAN_CMAKE})
 
-conan_cmake_run(
+conan_cmake_configure(
     REQUIRES
     boost/1.77.0
     fmt/8.0.1
     gtest/1.10.0
-    BASIC_SETUP CMAKE_TARGETS
-    BUILD missing
+    GENERATORS cmake_find_package
 )
+
+conan_cmake_autodetect(settings)
+
+conan_cmake_install(
+    PATH_OR_REFERENCE .
+    BUILD missing
+    REMOTE conancenter
+    SETTINGS ${settings}
+)
+
+list(APPEND CMAKE_MODULE_PATH ${CMAKE_BINARY_DIR})
 
 add_library(photo_video_renamer_common STATIC
     src/photo_video_renamer.cpp
@@ -31,10 +41,13 @@ target_include_directories(photo_video_renamer_common
     src
 )
 
+find_package(boost COMPONENTS filesystem REQUIRED)
+find_package(fmt REQUIRED)
+
 target_link_libraries(photo_video_renamer_common
     PRIVATE
-    CONAN_PKG::boost
-    CONAN_PKG::fmt
+    Boost::filesystem
+    fmt::fmt
     natural_sort
 )
 
@@ -51,9 +64,11 @@ add_executable(photo_video_renamer_test
     test/photo_video_renamer_test.cpp
 )
 
+find_package(gtest REQUIRED)
+
 target_link_libraries(photo_video_renamer_test
     PRIVATE
-    CONAN_PKG::gtest
+    GTest::gtest
     photo_video_renamer_common
 )
 
