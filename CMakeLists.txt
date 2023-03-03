@@ -68,7 +68,8 @@ find_package(gtest REQUIRED)
 
 target_link_libraries(photo_video_renamer_test
     PRIVATE
-    GTest::gtest
+    GTest::gmock
+    GTest::gtest_main
     photo_video_renamer_common
 )
 
