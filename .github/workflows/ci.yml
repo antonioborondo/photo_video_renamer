@@ -28,7 +28,7 @@ jobs:
         uses: actions/checkout@v2
       - name: Install Conan
         run: pip install conan==1.55.0
-      - name: Install Conan packages
+      - name: Install packages
         run: conan install . --install-folder build --build missing --settings compiler=msvc --settings compiler.cppstd=17 --settings compiler.runtime=dynamic --settings compiler.version=192
       - name: Configure
         run: cmake -G "Visual Studio 16 2019" -B build -DCMAKE_BUILD_TYPE=Release
