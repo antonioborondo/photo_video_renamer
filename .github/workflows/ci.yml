@@ -24,10 +24,10 @@ jobs:
     needs: clang-format
     runs-on: windows-2019
     steps:
-      - name: Install Conan
-        run: pip install conan==1.55.0
       - name: Checkout
         uses: actions/checkout@v2
+      - name: Install Conan
+        run: pip install conan==1.55.0
       - name: Install Conan packages
         run: conan install . --install-folder build --build missing --settings compiler=msvc --settings compiler.cppstd=17 --settings compiler.runtime=static --settings compiler.version=192
       - name: Configure
