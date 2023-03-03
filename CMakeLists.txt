@@ -16,7 +16,7 @@ target_include_directories(photo_video_renamer_common
 )
 
 find_package(boost COMPONENTS filesystem REQUIRED)
-find_package(fmt REQUIRED)
+#find_package(fmt REQUIRED)
 
 target_link_libraries(photo_video_renamer_common
     PRIVATE
