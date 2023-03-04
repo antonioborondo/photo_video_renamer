@@ -24,10 +24,12 @@ jobs:
     needs: clang-format
     runs-on: windows-2019
     steps:
-      - name: Install Conan
-        run: pip install conan==1.55.0
       - name: Checkout
         uses: actions/checkout@v2
+      - name: Install Conan
+        run: pip install conan==1.55.0
+      - name: Install packages
+        run: conan install . --install-folder build --build missing --settings compiler=msvc --settings compiler.cppstd=17 --settings compiler.runtime=dynamic --settings compiler.version=192 --settings build_type=Release
       - name: Configure
         run: cmake -G "Visual Studio 16 2019" -B build -DCMAKE_BUILD_TYPE=Release
       - name: Build
