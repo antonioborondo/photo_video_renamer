@@ -51,7 +51,7 @@ enable_testing()
 
 add_test(NAME photo_video_renamer_test COMMAND photo_video_renamer_test)
 
-add_subdirectory(lib)
+add_subdirectory(third_party)
 
 install(TARGETS photo_video_renamer DESTINATION bin)
 
