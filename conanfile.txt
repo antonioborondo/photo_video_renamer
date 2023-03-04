@@ -1,7 +1,7 @@
 [requires]
-boost/1.81.0
-fmt/9.1.0
-gtest/1.13.0
+boost/1.77.0
+fmt/8.0.1
+gtest/1.10.0
 
 [generators]
 CMakeDeps
