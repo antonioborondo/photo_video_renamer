@@ -29,7 +29,7 @@ jobs:
       - name: Install Conan
         run: pip install conan==2.0.1
       - name: Configure Conan
-        run: conan profile detect --force
+        run: conan profile detect
       - name: Install packages
         run: conan install . --output-folder=build --build=missing --settings compiler=msvc --settings compiler.cppstd=17 --settings compiler.runtime=dynamic --settings compiler.version=193 --settings build_type=Release
       - name: Configure
