@@ -27,7 +27,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
       - name: Install Conan
-        run: pip install conan==1.55.0
+        run: pip install conan==2.0.1
       - name: Configure Conan
         run: conan profile detect --force
       - name: Install packages
