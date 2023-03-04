@@ -37,6 +37,8 @@ jobs:
       - name: Test
         working-directory: build
         run: ctest -C Release -V
+      - name: Install EnVar plug-in for NSIS
+        run: Invoke-WebRequest -Uri https://nsis.sourceforge.io/mediawiki/images/7/7f/EnVar_plugin.zip -OutFile EnVar_plugin.zip; 7z x EnVar_plugin.zip -o"C:\Program Files (x86)\NSIS"
       - name: Pack
         working-directory: build
         run: cpack -G "NSIS"

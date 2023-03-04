@@ -76,6 +76,8 @@ SET(CPACK_NSIS_EXTRA_INSTALL_COMMANDS
     WriteRegStr HKCR 'Directory\\\\Background\\\\shell\\\\photo_video_renamer' '' 'Rename photos and videos'
     WriteRegStr HKCR 'Directory\\\\Background\\\\shell\\\\photo_video_renamer' 'Icon' '%SYSTEMROOT%\\\\System32\\\\shell32.dll,328'
     WriteRegStr HKCR 'Directory\\\\Background\\\\shell\\\\photo_video_renamer\\\\command' '' '$INSTDIR\\\\bin\\\\photo_video_renamer.exe'
+    EnVar::SetHKLM
+    EnVar::AddValue 'PATH' '$INSTDIR\\\\bin'
     "
 )
 
@@ -83,6 +85,8 @@ SET(CPACK_NSIS_EXTRA_UNINSTALL_COMMANDS
     "
     DeleteRegKey HKCR 'Directory\\\\shell\\\\photo_video_renamer'
     DeleteRegKey HKCR 'Directory\\\\Background\\\\shell\\\\photo_video_renamer'
+    EnVar::SetHKLM
+    EnVar::DeleteValue 'PATH' '$INSTDIR\\\\bin'
     "
 )
 
