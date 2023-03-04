@@ -1,5 +1,5 @@
 # photo_video_renamer
-[![CI](https://github.com/antonioborondo/photo_video_renamer/actions/workflows/ci.yml/badge.svg)](https://github.com/antonioborondo/photo_video_renamer/actions/workflows/ci.yml)
+[![CI](https://github.com/antonioborondo/photo_video_renamer/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/antonioborondo/photo_video_renamer/actions/workflows/ci.yml)
 
 ## Description
 Tool to rename all the photos and videos in a directory from the context menu or from the command line.
