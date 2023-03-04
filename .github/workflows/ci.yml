@@ -41,6 +41,6 @@ jobs:
         working-directory: build
         run: cpack -G "NSIS"
       - name: Publish
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           path: build/photo_video_renamer*.exe
