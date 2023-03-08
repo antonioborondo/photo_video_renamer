@@ -1,6 +1,6 @@
 ﻿cmake_minimum_required(VERSION 3.25)
 
-project(photo_video_renamer VERSION 1.4.0)
+project(photo_video_renamer VERSION 1.4.1)
 
 set(CMAKE_CXX_STANDARD 17)
 
