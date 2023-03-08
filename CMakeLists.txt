@@ -55,6 +55,8 @@ add_subdirectory(third_party)
 
 install(TARGETS photo_video_renamer DESTINATION bin)
 
+install(FILES res/icon.ico DESTINATION res)
+
 set(VC_REDISTRIBUTABLE ${CMAKE_BINARY_DIR}/vc_redist.x64.exe)
 
 if(NOT EXISTS ${VC_REDISTRIBUTABLE})
@@ -71,10 +73,10 @@ SET(CPACK_NSIS_EXTRA_INSTALL_COMMANDS
     "
     ExecWait '$INSTDIR\\\\bin\\\\vc_redist.x64.exe /install /quiet /norestart'
     WriteRegStr HKCR 'Directory\\\\shell\\\\photo_video_renamer' '' 'Rename photos and videos'
-    WriteRegStr HKCR 'Directory\\\\shell\\\\photo_video_renamer' 'Icon' '%SYSTEMROOT%\\\\System32\\\\shell32.dll,328'
+    WriteRegStr HKCR 'Directory\\\\shell\\\\photo_video_renamer' 'Icon' '$INSTDIR\\\\res\\\\icon.ico'
     WriteRegStr HKCR 'Directory\\\\shell\\\\photo_video_renamer\\\\command' '' '$INSTDIR\\\\bin\\\\photo_video_renamer.exe %1'
     WriteRegStr HKCR 'Directory\\\\Background\\\\shell\\\\photo_video_renamer' '' 'Rename photos and videos'
-    WriteRegStr HKCR 'Directory\\\\Background\\\\shell\\\\photo_video_renamer' 'Icon' '%SYSTEMROOT%\\\\System32\\\\shell32.dll,328'
+    WriteRegStr HKCR 'Directory\\\\Background\\\\shell\\\\photo_video_renamer' 'Icon' '$INSTDIR\\\\res\\\\icon.ico'
     WriteRegStr HKCR 'Directory\\\\Background\\\\shell\\\\photo_video_renamer\\\\command' '' '$INSTDIR\\\\bin\\\\photo_video_renamer.exe'
     EnVar::SetHKLM
     EnVar::AddValue 'PATH' '$INSTDIR\\\\bin'
