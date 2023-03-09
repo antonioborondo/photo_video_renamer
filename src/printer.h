@@ -1,15 +1,18 @@
 #pragma once
 
+#include <iostream>
 #include <ostream>
 
 class Printer
 {
     std::ostream& sink_;
 
-    size_t last_number_printed_characters_;
+    size_t last_number_replaceable_characters_;
 
 public:
-    Printer(std::ostream& sink);
+    Printer(std::ostream& sink = std::cout);
 
-    void Print(const std::string& message);
+    void PrintMessage(const std::string& message);
+
+    void PrintReplaceableMessage(const std::string& message);
 };

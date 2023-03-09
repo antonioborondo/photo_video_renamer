@@ -94,7 +94,7 @@ bool PhotoVideoRenamer::RenameFilenames(const std::vector<fs::path>& filenames, 
         {
             fs::rename(filenames.at(i), new_filenames.at(i));
 
-            printer_.Print(percentage_calculator_.CalculatePercentage(i + 1, filenames.size()));
+            printer_.PrintReplaceableMessage(percentage_calculator_.CalculatePercentage(i + 1, filenames.size()));
         }
         catch(const fs::filesystem_error&)
         {

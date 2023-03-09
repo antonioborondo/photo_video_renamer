@@ -33,6 +33,7 @@ add_executable(photo_video_renamer
 
 target_link_libraries(photo_video_renamer
     PRIVATE
+    fmt::fmt
     photo_video_renamer_common
 )
 

@@ -2,15 +2,22 @@
 
 Printer::Printer(std::ostream& sink):
     sink_{sink},
-    last_number_printed_characters_{}
+    last_number_replaceable_characters_{}
 {
 }
 
-void Printer::Print(const std::string& message)
+void Printer::PrintMessage(const std::string& message)
 {
-    sink_ << std::string(last_number_printed_characters_, '\b');
+    sink_ << message;
+
+    last_number_replaceable_characters_ = 0;
+}
+
+void Printer::PrintReplaceableMessage(const std::string& message)
+{
+    sink_ << std::string(last_number_replaceable_characters_, '\b');
 
     sink_ << message;
 
-    last_number_printed_characters_ = message.length();
+    last_number_replaceable_characters_ = message.length();
 }

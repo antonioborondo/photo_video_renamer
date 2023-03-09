@@ -1,13 +1,18 @@
 ﻿#include "photo_video_renamer.h"
+#include "printer.h"
+
+#include <fmt/format.h>
 
 #include <filesystem>
-#include <iostream>
 
 int main(int argc, const char** argv)
 {
+    Printer printer;
+    PhotoVideoRenamer photo_video_renamer{printer};
+
     if(2 < argc)
     {
-        std::cout << "Usage: photo_video_renamer.exe [<directory>]" << std::endl;
+        printer.PrintMessage("Usage: photo_video_renamer.exe [<directory>]\n");
 
         return 1;
     }
@@ -18,17 +23,16 @@ int main(int argc, const char** argv)
         directory = argv[1];
     }
 
-    PhotoVideoRenamer photo_video_renamer;
     if(!photo_video_renamer.DirectoryExists(directory))
     {
-        std::cout << "Error: Directory " << directory << " does not exist" << std::endl;
+        printer.PrintMessage(fmt::format("Error: Directory {0} does not exist\n", directory.string()));
 
         return 1;
     }
 
     if(!photo_video_renamer.RenamePhotosAndVideosFromDirectory(directory))
     {
-        std::cout << "Error: Cannot rename photos and videos from directory " << directory << std::endl;
+        printer.PrintMessage(fmt::format("Error: Cannot rename photos and videos from directory {0}\n", directory.string()));
 
         return 1;
     }

@@ -14,7 +14,7 @@ class PhotoVideoRenamer
     PercentageCalculator percentage_calculator_;
 
 public:
-    PhotoVideoRenamer(const Printer& printer = Printer{std::cout});
+    PhotoVideoRenamer(const Printer& printer);
 
     bool DirectoryExists(const std::filesystem::path& directory);
 
