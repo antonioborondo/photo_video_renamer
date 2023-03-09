@@ -29,7 +29,7 @@ TEST_F(PrinterTest, PrintMessage)
     ASSERT_EQ("a", sink_.str());
 }
 
-TEST_F(PrinterTest, PrintMultipleMessage)
+TEST_F(PrinterTest, PrintMultipleMessages)
 {
     printer_.PrintMessage("a");
     ASSERT_EQ("a", sink_.str());
