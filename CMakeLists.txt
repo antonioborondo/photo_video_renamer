@@ -8,6 +8,7 @@ list(APPEND CMAKE_MODULE_PATH ${CMAKE_BINARY_DIR})
 
 add_library(photo_video_renamer_common STATIC
     src/photo_video_renamer.cpp
+    src/printer.cc
 )
 
 target_include_directories(photo_video_renamer_common
@@ -36,6 +37,7 @@ target_link_libraries(photo_video_renamer
 
 add_executable(photo_video_renamer_test
     test/photo_video_renamer_test.cpp
+    test/printer_test.cc
 )
 
 find_package(gtest REQUIRED)
