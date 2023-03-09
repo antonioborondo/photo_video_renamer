@@ -40,5 +40,5 @@ std::string PercentageCalculator::CalculatePercentage(size_t renamed, size_t tot
     }
 
     const auto percentage{(real_renamed * 100) / real_total};
-    return fmt::format("{}%", percentage);
+    return fmt::format("{0}%", percentage);
 }
