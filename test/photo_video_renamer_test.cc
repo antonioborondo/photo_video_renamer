@@ -6,13 +6,24 @@
 
 #include <cstdio>
 #include <filesystem>
+#include <sstream>
 
 namespace fs = std::filesystem;
 
 class PhotoVideoRenamerTest: public testing::Test
 {
+    std::ostringstream sink_;
+
+    Printer printer_;
+
 protected:
     PhotoVideoRenamer photo_video_renamer_;
+
+    PhotoVideoRenamerTest():
+        printer_{sink_},
+        photo_video_renamer_{printer_}
+    {
+    }
 };
 
 TEST_F(PhotoVideoRenamerTest, NonExistingDirectoryDoesNotExists)

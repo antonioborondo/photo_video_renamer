@@ -11,6 +11,12 @@
 
 namespace fs = std::filesystem;
 
+PhotoVideoRenamer::PhotoVideoRenamer(const Printer& printer):
+    printer_{printer},
+    percentage_calculator_{}
+{
+}
+
 bool PhotoVideoRenamer::DirectoryExists(const fs::path& directory)
 {
     return (fs::exists(directory) && fs::is_directory(directory));
@@ -87,6 +93,8 @@ bool PhotoVideoRenamer::RenameFilenames(const std::vector<fs::path>& filenames, 
         try
         {
             fs::rename(filenames.at(i), new_filenames.at(i));
+
+            printer_.Print(percentage_calculator_.CalculatePercentage(i + 1, filenames.size()));
         }
         catch(const fs::filesystem_error&)
         {
@@ -117,7 +125,9 @@ bool PhotoVideoRenamer::RenamePhotosAndVideosFromDirectory(const fs::path& direc
         }
         while(temp_filenames_already_exist);
 
+        percentage_calculator_.SetMode(PercentageCalculatorMode::kTempRenaming);
         RenameFilenames(filenames, temp_filenames);
+        percentage_calculator_.SetMode(PercentageCalculatorMode::kFinalRenaming);
 
         filenames = GetFilenamesFromDirectory(directory);
     }

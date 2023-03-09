@@ -1,12 +1,20 @@
 #pragma once
 
+#include "percentage_calculator.h"
+#include "printer.h"
+
 #include <filesystem>
+#include <iostream>
 #include <vector>
 
 class PhotoVideoRenamer
 {
+    Printer printer_;
+
+    PercentageCalculator percentage_calculator_;
+
 public:
-    PhotoVideoRenamer() = default;
+    PhotoVideoRenamer(const Printer& printer = Printer{std::cout});
 
     bool DirectoryExists(const std::filesystem::path& directory);
 
