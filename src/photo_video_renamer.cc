@@ -5,15 +5,12 @@
 #include <natural_sort/natural_sort.hpp>
 
 #include <algorithm>
-#include <iostream>
 #include <regex>
-#include <vector>
 
 namespace fs = std::filesystem;
 
 PhotoVideoRenamer::PhotoVideoRenamer(const Printer& printer):
-    printer_{printer},
-    percentage_calculator_{}
+    printer_{printer}
 {
 }
 

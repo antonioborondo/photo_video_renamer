@@ -4,7 +4,6 @@
 #include "printer.h"
 
 #include <filesystem>
-#include <iostream>
 #include <vector>
 
 class PhotoVideoRenamer
