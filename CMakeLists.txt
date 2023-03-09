@@ -8,7 +8,7 @@ list(APPEND CMAKE_MODULE_PATH ${CMAKE_BINARY_DIR})
 
 add_library(photo_video_renamer_common STATIC
     src/percentage_calculator.cc
-    src/photo_video_renamer.cpp
+    src/photo_video_renamer.cc
     src/printer.cc
 )
 
@@ -38,7 +38,7 @@ target_link_libraries(photo_video_renamer
 
 add_executable(photo_video_renamer_test
     test/percentage_calculator_test.cc
-    test/photo_video_renamer_test.cpp
+    test/photo_video_renamer_test.cc
     test/printer_test.cc
 )
 
