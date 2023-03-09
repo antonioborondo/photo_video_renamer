@@ -11,12 +11,12 @@
 
 namespace fs = std::filesystem;
 
-bool directory_exists(const fs::path& directory)
+bool PhotoVideoRenamer::DirectoryExists(const fs::path& directory)
 {
     return (fs::exists(directory) && fs::is_directory(directory));
 }
 
-bool filename_is_photo_or_video(const fs::path& filename)
+bool PhotoVideoRenamer::FilenameIsPhotoOrVideo(const fs::path& filename)
 {
     const std::regex photo_and_video_extensions{".avi|.bmp|.heic|.jpeg|.jpg|.mov|.mp4|.png", std::regex_constants::icase};
 
@@ -25,13 +25,13 @@ bool filename_is_photo_or_video(const fs::path& filename)
     return std::regex_match(filename_extension, photo_and_video_extensions);
 }
 
-std::vector<fs::path> get_filenames_from_directory(const fs::path& directory)
+std::vector<fs::path> PhotoVideoRenamer::GetFilenamesFromDirectory(const fs::path& directory)
 {
     std::vector<fs::path> filenames;
 
     for(fs::directory_iterator directory_iterator{directory}; fs::directory_iterator{} != directory_iterator; directory_iterator++)
     {
-        if(fs::is_regular_file(directory_iterator->status()) && filename_is_photo_or_video(directory_iterator->path()))
+        if(fs::is_regular_file(directory_iterator->status()) && FilenameIsPhotoOrVideo(directory_iterator->path()))
         {
             filenames.push_back(directory_iterator->path());
         }
@@ -45,7 +45,7 @@ std::vector<fs::path> get_filenames_from_directory(const fs::path& directory)
     return filenames;
 }
 
-std::vector<fs::path> generate_new_filenames(const std::vector<fs::path>& filenames, const std::string& prefix)
+std::vector<fs::path> PhotoVideoRenamer::GenerateNewFilenames(const std::vector<fs::path>& filenames, const std::string& prefix)
 {
     const auto number_digits_filename{std::to_string(filenames.size()).length()};
 
@@ -69,7 +69,7 @@ std::vector<fs::path> generate_new_filenames(const std::vector<fs::path>& filena
     return new_filenames;
 }
 
-bool check_if_new_filenames_already_exist(const std::vector<fs::path>& filenames, const std::vector<fs::path>& new_filenames)
+bool PhotoVideoRenamer::CheckIfNewFilenamesAlreadyExist(const std::vector<fs::path>& filenames, const std::vector<fs::path>& new_filenames)
 {
     return std::any_of(filenames.begin(), filenames.end(), [&](const fs::path& filename)
         {
@@ -80,7 +80,7 @@ bool check_if_new_filenames_already_exist(const std::vector<fs::path>& filenames
         });
 }
 
-bool rename_filenames(const std::vector<fs::path>& filenames, const std::vector<fs::path>& new_filenames)
+bool PhotoVideoRenamer::RenameFilenames(const std::vector<fs::path>& filenames, const std::vector<fs::path>& new_filenames)
 {
     for(size_t i{}; i < filenames.size(); ++i)
     {
@@ -97,13 +97,13 @@ bool rename_filenames(const std::vector<fs::path>& filenames, const std::vector<
     return true;
 }
 
-bool rename_photos_and_videos_from_directory(const fs::path& directory)
+bool PhotoVideoRenamer::RenamePhotosAndVideosFromDirectory(const fs::path& directory)
 {
-    auto filenames{get_filenames_from_directory(directory)};
+    auto filenames{GetFilenamesFromDirectory(directory)};
 
-    auto new_filenames{generate_new_filenames(filenames)};
+    auto new_filenames{GenerateNewFilenames(filenames)};
 
-    const auto new_filenames_already_exist{check_if_new_filenames_already_exist(filenames, new_filenames)};
+    const auto new_filenames_already_exist{CheckIfNewFilenamesAlreadyExist(filenames, new_filenames)};
     if(new_filenames_already_exist)
     {
         int i{};
@@ -111,16 +111,16 @@ bool rename_photos_and_videos_from_directory(const fs::path& directory)
         bool temp_filenames_already_exist{};
         do
         {
-            temp_filenames = generate_new_filenames(filenames, "temp" + std::to_string(i++));
+            temp_filenames = GenerateNewFilenames(filenames, "temp" + std::to_string(i++));
 
-            temp_filenames_already_exist = check_if_new_filenames_already_exist(filenames, temp_filenames);
+            temp_filenames_already_exist = CheckIfNewFilenamesAlreadyExist(filenames, temp_filenames);
         }
         while(temp_filenames_already_exist);
 
-        rename_filenames(filenames, temp_filenames);
+        RenameFilenames(filenames, temp_filenames);
 
-        filenames = get_filenames_from_directory(directory);
+        filenames = GetFilenamesFromDirectory(directory);
     }
 
-    return rename_filenames(filenames, new_filenames);
+    return RenameFilenames(filenames, new_filenames);
 }

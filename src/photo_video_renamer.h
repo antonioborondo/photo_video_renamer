@@ -3,16 +3,22 @@
 #include <filesystem>
 #include <vector>
 
-bool directory_exists(const std::filesystem::path& directory);
+class PhotoVideoRenamer
+{
+public:
+    PhotoVideoRenamer() = default;
 
-bool filename_is_photo_or_video(const std::filesystem::path& filename);
+    bool DirectoryExists(const std::filesystem::path& directory);
 
-std::vector<std::filesystem::path> get_filenames_from_directory(const std::filesystem::path& directory);
+    bool FilenameIsPhotoOrVideo(const std::filesystem::path& filename);
 
-std::vector<std::filesystem::path> generate_new_filenames(const std::vector<std::filesystem::path>& filenames, const std::string& prefix = "");
+    std::vector<std::filesystem::path> GetFilenamesFromDirectory(const std::filesystem::path& directory);
 
-bool check_if_new_filenames_already_exist(const std::vector<std::filesystem::path>& filenames, const std::vector<std::filesystem::path>& new_filenames);
+    std::vector<std::filesystem::path> GenerateNewFilenames(const std::vector<std::filesystem::path>& filenames, const std::string& prefix = "");
 
-bool rename_filenames(const std::vector<std::filesystem::path>& filenames, const std::vector<std::filesystem::path>& new_filenames);
+    bool CheckIfNewFilenamesAlreadyExist(const std::vector<std::filesystem::path>& filenames, const std::vector<std::filesystem::path>& new_filenames);
 
-bool rename_photos_and_videos_from_directory(const std::filesystem::path& directory);
+    bool RenameFilenames(const std::vector<std::filesystem::path>& filenames, const std::vector<std::filesystem::path>& new_filenames);
+
+    bool RenamePhotosAndVideosFromDirectory(const std::filesystem::path& directory);
+};

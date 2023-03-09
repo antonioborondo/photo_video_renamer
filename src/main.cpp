@@ -18,14 +18,15 @@ int main(int argc, const char** argv)
         directory = argv[1];
     }
 
-    if(!directory_exists(directory))
+    PhotoVideoRenamer photo_video_renamer;
+    if(!photo_video_renamer.DirectoryExists(directory))
     {
         std::cout << "Error: Directory " << directory << " does not exist" << std::endl;
 
         return 1;
     }
 
-    if(!rename_photos_and_videos_from_directory(directory))
+    if(!photo_video_renamer.RenamePhotosAndVideosFromDirectory(directory))
     {
         std::cout << "Error: Cannot rename photos and videos from directory " << directory << std::endl;
 

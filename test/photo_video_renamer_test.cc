@@ -9,67 +9,73 @@
 
 namespace fs = std::filesystem;
 
-TEST(DirectoryExists, NonExistingDirectoryDoesNotExists)
+class PhotoVideoRenamerTest: public testing::Test
+{
+protected:
+    PhotoVideoRenamer photo_video_renamer_;
+};
+
+TEST_F(PhotoVideoRenamerTest, NonExistingDirectoryDoesNotExists)
 {
     const fs::path non_existing_directory{std::tmpnam(nullptr)};
 
-    ASSERT_FALSE(directory_exists(non_existing_directory));
+    ASSERT_FALSE(photo_video_renamer_.DirectoryExists(non_existing_directory));
 }
 
-TEST(DirectoryExists, ExistingFileIsNotDirectory)
+TEST_F(PhotoVideoRenamerTest, ExistingFileIsNotDirectory)
 {
     Directory_wrapper parent_directory;
     File_wrapper file{parent_directory, "file.txt"};
 
-    ASSERT_FALSE(directory_exists(file.path()));
+    ASSERT_FALSE(photo_video_renamer_.DirectoryExists(file.path()));
 }
 
-TEST(DirectoryExists, ExistingDirectoryExists)
+TEST_F(PhotoVideoRenamerTest, ExistingDirectoryExists)
 {
     Directory_wrapper directory;
 
-    ASSERT_TRUE(directory_exists(directory.path()));
+    ASSERT_TRUE(photo_video_renamer_.DirectoryExists(directory.path()));
 }
 
-TEST(FilenameIsPhotoOrVideo, PhotoOrVideoFilenamesInLowerAndUpperCase)
+TEST_F(PhotoVideoRenamerTest, FilenameIsPhotoOrVideoInLowerAndUpperCase)
 {
-    ASSERT_TRUE(filename_is_photo_or_video("file.avi"));
-    ASSERT_TRUE(filename_is_photo_or_video("file.AVI"));
-    ASSERT_TRUE(filename_is_photo_or_video("file.bmp"));
-    ASSERT_TRUE(filename_is_photo_or_video("file.BMP"));
-    ASSERT_TRUE(filename_is_photo_or_video("file.heic"));
-    ASSERT_TRUE(filename_is_photo_or_video("file.HEIC"));
-    ASSERT_TRUE(filename_is_photo_or_video("file.jpeg"));
-    ASSERT_TRUE(filename_is_photo_or_video("file.JPEG"));
-    ASSERT_TRUE(filename_is_photo_or_video("file.jpg"));
-    ASSERT_TRUE(filename_is_photo_or_video("file.JPG"));
-    ASSERT_TRUE(filename_is_photo_or_video("file.mov"));
-    ASSERT_TRUE(filename_is_photo_or_video("file.MOV"));
-    ASSERT_TRUE(filename_is_photo_or_video("file.mp4"));
-    ASSERT_TRUE(filename_is_photo_or_video("file.MP4"));
-    ASSERT_TRUE(filename_is_photo_or_video("file.png"));
-    ASSERT_TRUE(filename_is_photo_or_video("file.PNG"));
+    ASSERT_TRUE(photo_video_renamer_.FilenameIsPhotoOrVideo("file.avi"));
+    ASSERT_TRUE(photo_video_renamer_.FilenameIsPhotoOrVideo("file.AVI"));
+    ASSERT_TRUE(photo_video_renamer_.FilenameIsPhotoOrVideo("file.bmp"));
+    ASSERT_TRUE(photo_video_renamer_.FilenameIsPhotoOrVideo("file.BMP"));
+    ASSERT_TRUE(photo_video_renamer_.FilenameIsPhotoOrVideo("file.heic"));
+    ASSERT_TRUE(photo_video_renamer_.FilenameIsPhotoOrVideo("file.HEIC"));
+    ASSERT_TRUE(photo_video_renamer_.FilenameIsPhotoOrVideo("file.jpeg"));
+    ASSERT_TRUE(photo_video_renamer_.FilenameIsPhotoOrVideo("file.JPEG"));
+    ASSERT_TRUE(photo_video_renamer_.FilenameIsPhotoOrVideo("file.jpg"));
+    ASSERT_TRUE(photo_video_renamer_.FilenameIsPhotoOrVideo("file.JPG"));
+    ASSERT_TRUE(photo_video_renamer_.FilenameIsPhotoOrVideo("file.mov"));
+    ASSERT_TRUE(photo_video_renamer_.FilenameIsPhotoOrVideo("file.MOV"));
+    ASSERT_TRUE(photo_video_renamer_.FilenameIsPhotoOrVideo("file.mp4"));
+    ASSERT_TRUE(photo_video_renamer_.FilenameIsPhotoOrVideo("file.MP4"));
+    ASSERT_TRUE(photo_video_renamer_.FilenameIsPhotoOrVideo("file.png"));
+    ASSERT_TRUE(photo_video_renamer_.FilenameIsPhotoOrVideo("file.PNG"));
 }
 
-TEST(FilenameIsPhotoOrVideo, NonPhotoOrVideoFilenamesInLowerAndUpperCase)
+TEST_F(PhotoVideoRenamerTest, FilenameIsNotPhotoOrVideoInLowerAndUpperCase)
 {
-    ASSERT_FALSE(filename_is_photo_or_video("file.txt"));
-    ASSERT_FALSE(filename_is_photo_or_video("file.TXT"));
-    ASSERT_FALSE(filename_is_photo_or_video("file.pdf"));
-    ASSERT_FALSE(filename_is_photo_or_video("file.PDF"));
-    ASSERT_FALSE(filename_is_photo_or_video("file.doc"));
-    ASSERT_FALSE(filename_is_photo_or_video("file.DOC"));
+    ASSERT_FALSE(photo_video_renamer_.FilenameIsPhotoOrVideo("file.TXT"));
+    ASSERT_FALSE(photo_video_renamer_.FilenameIsPhotoOrVideo("file.pdf"));
+    ASSERT_FALSE(photo_video_renamer_.FilenameIsPhotoOrVideo("file.PDF"));
+    ASSERT_FALSE(photo_video_renamer_.FilenameIsPhotoOrVideo("file.doc"));
+    ASSERT_FALSE(photo_video_renamer_.FilenameIsPhotoOrVideo("file.txt"));
+    ASSERT_FALSE(photo_video_renamer_.FilenameIsPhotoOrVideo("file.DOC"));
 }
 
-TEST(GetFilenamesFromDirectory, NoFilenamesAreReturnedIfDirectoryIsEmpty)
+TEST_F(PhotoVideoRenamerTest, GetFilenamesFromDirectoryDoesNotReturnFilenamesIfDirectoryIsEmpty)
 {
     Directory_wrapper empty_directory;
-    const auto filenames{get_filenames_from_directory(empty_directory.path())};
+    const auto filenames{photo_video_renamer_.GetFilenamesFromDirectory(empty_directory.path())};
 
     ASSERT_THAT(filenames, testing::IsEmpty());
 }
 
-TEST(GetFilenamesFromDirectory, OnlyPhotosAndVideosAreReturned)
+TEST_F(PhotoVideoRenamerTest, GetFilenamesFromDirectoryOnlyReturnsPhotosAndVideos)
 {
     Directory_wrapper parent_directory;
     File_wrapper file_01{parent_directory, "file_01.avi"};
@@ -84,12 +90,12 @@ TEST(GetFilenamesFromDirectory, OnlyPhotosAndVideosAreReturned)
     File_wrapper file_10{parent_directory, "file_10.pdf"};
     File_wrapper file_11{parent_directory, "file_11.doc"};
 
-    const auto filenames{get_filenames_from_directory(parent_directory.path())};
+    const auto filenames{photo_video_renamer_.GetFilenamesFromDirectory(parent_directory.path())};
 
     ASSERT_THAT(filenames, testing::UnorderedElementsAre(file_01.path(), file_02.path(), file_03.path(), file_04.path(), file_05.path(), file_06.path(), file_07.path(), file_08.path()));
 }
 
-TEST(GetFilenamesFromDirectory, FilenamesReturnedAreSorted)
+TEST_F(PhotoVideoRenamerTest, GetFilenamesFromDirectoryReturnsFilenamesSorted)
 {
     Directory_wrapper parent_directory;
     File_wrapper file_1{parent_directory, "file_1.avi"};
@@ -101,94 +107,94 @@ TEST(GetFilenamesFromDirectory, FilenamesReturnedAreSorted)
     File_wrapper file_7{parent_directory, "file_7.mp4"};
     File_wrapper file_8{parent_directory, "file_8.png"};
 
-    const auto filenames{get_filenames_from_directory(parent_directory.path())};
+    const auto filenames{photo_video_renamer_.GetFilenamesFromDirectory(parent_directory.path())};
 
     ASSERT_THAT(filenames, testing::ElementsAre(file_1.path(), file_2.path(), file_3.path(), file_4.path(), file_5.path(), file_6.path(), file_7.path(), file_8.path()));
 }
 
-TEST(GenerateNewFilenames, NumberOfInputFilenamesIsEqualToNumberOfGeneratedFilenames)
+TEST_F(PhotoVideoRenamerTest, GenerateNewFilenamesReturnsSameNumberOfFilesAsReceived)
 {
     for(int i{}; i < 10; ++i)
     {
-        ASSERT_THAT(generate_new_filenames(std::vector<fs::path>(i)), testing::SizeIs(i));
+        ASSERT_THAT(photo_video_renamer_.GenerateNewFilenames(std::vector<fs::path>(i)), testing::SizeIs(i));
     }
 }
 
-TEST(GenerateNewFilenames, NumberOfLeadingZerosIsCorrect)
+TEST_F(PhotoVideoRenamerTest, GenerateNewFilenamesReturnsCorrectNumberOfLeadingZeros)
 {
-    ASSERT_THAT(generate_new_filenames(std::vector<fs::path>(9)), testing::IsSupersetOf({fs::path{"1"}, fs::path{"9"}}));
-    ASSERT_THAT(generate_new_filenames(std::vector<fs::path>(99)), testing::IsSupersetOf({fs::path{"01"}, fs::path{"99"}}));
-    ASSERT_THAT(generate_new_filenames(std::vector<fs::path>(999)), testing::IsSupersetOf({fs::path{"001"}, fs::path{"010"}, fs::path{"999"}}));
-    ASSERT_THAT(generate_new_filenames(std::vector<fs::path>(9999)), testing::IsSupersetOf({fs::path{"0001"}, fs::path{"0010"}, fs::path{"0100"}, fs::path{"9999"}}));
+    ASSERT_THAT(photo_video_renamer_.GenerateNewFilenames(std::vector<fs::path>(9)), testing::IsSupersetOf({fs::path{"1"}, fs::path{"9"}}));
+    ASSERT_THAT(photo_video_renamer_.GenerateNewFilenames(std::vector<fs::path>(99)), testing::IsSupersetOf({fs::path{"01"}, fs::path{"99"}}));
+    ASSERT_THAT(photo_video_renamer_.GenerateNewFilenames(std::vector<fs::path>(999)), testing::IsSupersetOf({fs::path{"001"}, fs::path{"010"}, fs::path{"999"}}));
+    ASSERT_THAT(photo_video_renamer_.GenerateNewFilenames(std::vector<fs::path>(9999)), testing::IsSupersetOf({fs::path{"0001"}, fs::path{"0010"}, fs::path{"0100"}, fs::path{"9999"}}));
 }
 
-TEST(GenerateNewFilenames, ExtensionIsLowerCase)
+TEST_F(PhotoVideoRenamerTest, GenerateNewFilenamesReturnsExtensionInLowerCase)
 {
-    ASSERT_THAT(generate_new_filenames({fs::path{"file.TXT"}}), testing::ElementsAre(fs::path{"1.txt"}));
+    ASSERT_THAT(photo_video_renamer_.GenerateNewFilenames({fs::path{"file.TXT"}}), testing::ElementsAre(fs::path{"1.txt"}));
 }
 
-TEST(GenerateNewFilenames, ParentDirectoryIsKept)
+TEST_F(PhotoVideoRenamerTest, GenerateNewFilenamesKeepParentDirectory)
 {
     const std::vector<fs::path> filenames{fs::path{"C:/1/2/3/4/5/file.txt"}};
-    const auto new_filenames{generate_new_filenames(filenames)};
+    const auto new_filenames{photo_video_renamer_.GenerateNewFilenames(filenames)};
 
     ASSERT_EQ(filenames.at(0).parent_path(), new_filenames.at(0).parent_path());
 }
 
-TEST(GenerateNewFilenames, PrefixIsAddedToTheFilename)
+TEST_F(PhotoVideoRenamerTest, GenerateNewFilenamesAddsPrefixToFilename)
 {
     constexpr auto prefix{"test_"};
 
-    ASSERT_THAT(generate_new_filenames(std::vector<fs::path>(1), prefix), testing::ElementsAre(fs::path{"test_1"}));
+    ASSERT_THAT(photo_video_renamer_.GenerateNewFilenames(std::vector<fs::path>(1), prefix), testing::ElementsAre(fs::path{"test_1"}));
 }
 
-TEST(CheckIfNewFilenamesAlreadyExist, OneFilenameAlreadyExists)
+TEST_F(PhotoVideoRenamerTest, CheckIfNewFilenamesAlreadyExistsFindsOneFilename)
 {
     const std::vector<fs::path> filenames{fs::path{"1"}, fs::path{"2"}, fs::path{"3"}};
     const std::vector<fs::path> new_filenames{fs::path{"a"}, fs::path{"2"}, fs::path{"c"}};
 
-    ASSERT_TRUE(check_if_new_filenames_already_exist(filenames, new_filenames));
+    ASSERT_TRUE(photo_video_renamer_.CheckIfNewFilenamesAlreadyExist(filenames, new_filenames));
 }
 
-TEST(CheckIfNewFilenamesAlreadyExist, OneFilenameWithDifferentCaseAlreadyExists)
+TEST_F(PhotoVideoRenamerTest, CheckIfNewFilenamesAlreadyExistsFindsOneFilenameButWithDifferentCase)
 {
     const std::vector<fs::path> filenames{fs::path{"a"}, fs::path{"b"}, fs::path{"c"}};
     const std::vector<fs::path> new_filenames{fs::path{"1"}, fs::path{"B"}, fs::path{"3"}};
 
-    ASSERT_TRUE(check_if_new_filenames_already_exist(filenames, new_filenames));
+    ASSERT_TRUE(photo_video_renamer_.CheckIfNewFilenamesAlreadyExist(filenames, new_filenames));
 }
 
-TEST(CheckIfNewFilenamesAlreadyExist, NoFilenameExists)
+TEST_F(PhotoVideoRenamerTest, CheckIfNewFilenamesAlreadyExistsDoesNotFindExistingFilenames)
 {
     const std::vector<fs::path> filenames{fs::path{"1"}, fs::path{"2"}, fs::path{"3"}};
     const std::vector<fs::path> new_filenames{fs::path{"a"}, fs::path{"b"}, fs::path{"c"}};
 
-    ASSERT_FALSE(check_if_new_filenames_already_exist(filenames, new_filenames));
+    ASSERT_FALSE(photo_video_renamer_.CheckIfNewFilenamesAlreadyExist(filenames, new_filenames));
 }
 
-TEST(RenameFilenames, FilenameDoesNotExist)
+TEST_F(PhotoVideoRenamerTest, RenameFilenamesDoesNotRenameIfFilenameDoesNotExist)
 {
     Directory_wrapper parent_directory;
     fs::path non_existing_filename{parent_directory.path() / "file.jpg"};
     fs::path new_filename{parent_directory.path() / "1.jpg"};
 
-    ASSERT_FALSE(rename_filenames({non_existing_filename}, {new_filename}));
+    ASSERT_FALSE(photo_video_renamer_.RenameFilenames({non_existing_filename}, {new_filename}));
 }
 
-TEST(RenameFilenames, FilenameIsRenamed)
+TEST_F(PhotoVideoRenamerTest, RenameFilenamesRenamesFilenames)
 {
     Directory_wrapper parent_directory;
     File_wrapper file{parent_directory, "file.jpg"};
     fs::path new_filename{parent_directory.path() / "1.jpg"};
 
-    ASSERT_TRUE(rename_filenames({file.path()}, {new_filename}));
+    ASSERT_TRUE(photo_video_renamer_.RenameFilenames({file.path()}, {new_filename}));
 
-    auto filenames = get_filenames_from_directory(parent_directory.path());
+    auto filenames = photo_video_renamer_.GetFilenamesFromDirectory(parent_directory.path());
 
     ASSERT_THAT(filenames, testing::Contains(new_filename));
 }
 
-TEST(RenamePhotosAndVideosFromDirectory, PhotosAndVideosAreRenamed)
+TEST_F(PhotoVideoRenamerTest, RenamePhotosAndVideosFromDirectoryRenamesPhotosAndVideosFromDirectory)
 {
     Directory_wrapper parent_directory;
     File_wrapper file_1{parent_directory, "a.jpg"};
@@ -197,7 +203,7 @@ TEST(RenamePhotosAndVideosFromDirectory, PhotosAndVideosAreRenamed)
     File_wrapper file_4{parent_directory, "4.jpg"};
     File_wrapper file_5{parent_directory, "e.jpg"};
 
-    ASSERT_TRUE(rename_photos_and_videos_from_directory(parent_directory.path()));
+    ASSERT_TRUE(photo_video_renamer_.RenamePhotosAndVideosFromDirectory(parent_directory.path()));
 
-    ASSERT_THAT(get_filenames_from_directory(parent_directory.path()), testing::ElementsAre(fs::path{parent_directory.path() / "1.jpg"}, fs::path{parent_directory.path() / "2.jpg"}, fs::path{parent_directory.path() / "3.jpg"}, fs::path{parent_directory.path() / "4.jpg"}, fs::path{parent_directory.path() / "5.jpg"}));
+    ASSERT_THAT(photo_video_renamer_.GetFilenamesFromDirectory(parent_directory.path()), testing::ElementsAre(fs::path{parent_directory.path() / "1.jpg"}, fs::path{parent_directory.path() / "2.jpg"}, fs::path{parent_directory.path() / "3.jpg"}, fs::path{parent_directory.path() / "4.jpg"}, fs::path{parent_directory.path() / "5.jpg"}));
 }
