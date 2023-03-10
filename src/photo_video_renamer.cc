@@ -9,7 +9,7 @@
 
 namespace fs = std::filesystem;
 
-PhotoVideoRenamer::PhotoVideoRenamer(const Progress& progress):
+PhotoVideoRenamer::PhotoVideoRenamer(Progress& progress):
     progress_{progress}
 {
 }

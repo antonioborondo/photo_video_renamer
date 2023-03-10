@@ -7,10 +7,10 @@
 
 class PhotoVideoRenamer
 {
-    Progress progress_;
+    Progress& progress_;
 
 public:
-    PhotoVideoRenamer(const Progress& progress);
+    PhotoVideoRenamer(Progress& progress);
 
     bool DirectoryExists(const std::filesystem::path& directory);
 
