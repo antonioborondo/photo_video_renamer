@@ -2,8 +2,6 @@
 
 #include "printer.h"
 
-#include <mutex>
-
 class Progress
 {
     size_t total_;
@@ -12,14 +10,16 @@ class Progress
 
     bool stop_;
 
-    Printer printer_;
+    Printer& printer_;
 
 public:
-    Progress(const Printer& printer);
+    Progress(Printer& printer);
 
     void IncrementTotal(size_t amount);
 
     void IncrementRenamed(size_t amount);
+
+    void PrintProgress();
 
     void Stop();
 
