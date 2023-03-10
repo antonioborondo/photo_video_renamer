@@ -35,15 +35,15 @@ TEST_F(PhotoVideoRenamerTest, NonExistingDirectoryDoesNotExists)
 
 TEST_F(PhotoVideoRenamerTest, ExistingFileIsNotDirectory)
 {
-    Directory_wrapper parent_directory;
-    File_wrapper file{parent_directory, "file.txt"};
+    DirectoryWrapper parent_directory;
+    FileWrapper file{parent_directory, "file.txt"};
 
     ASSERT_FALSE(photo_video_renamer_.DirectoryExists(file.path()));
 }
 
 TEST_F(PhotoVideoRenamerTest, ExistingDirectoryExists)
 {
-    Directory_wrapper directory;
+    DirectoryWrapper directory;
 
     ASSERT_TRUE(photo_video_renamer_.DirectoryExists(directory.path()));
 }
@@ -80,7 +80,7 @@ TEST_F(PhotoVideoRenamerTest, FilenameIsNotPhotoOrVideoInLowerAndUpperCase)
 
 TEST_F(PhotoVideoRenamerTest, GetFilenamesFromDirectoryDoesNotReturnFilenamesIfDirectoryIsEmpty)
 {
-    Directory_wrapper empty_directory;
+    DirectoryWrapper empty_directory;
     const auto filenames{photo_video_renamer_.GetFilenamesFromDirectory(empty_directory.path())};
 
     ASSERT_THAT(filenames, testing::IsEmpty());
@@ -88,18 +88,18 @@ TEST_F(PhotoVideoRenamerTest, GetFilenamesFromDirectoryDoesNotReturnFilenamesIfD
 
 TEST_F(PhotoVideoRenamerTest, GetFilenamesFromDirectoryOnlyReturnsPhotosAndVideos)
 {
-    Directory_wrapper parent_directory;
-    File_wrapper file_01{parent_directory, "file_01.avi"};
-    File_wrapper file_02{parent_directory, "file_02.bmp"};
-    File_wrapper file_03{parent_directory, "file_03.heic"};
-    File_wrapper file_04{parent_directory, "file_04.jpeg"};
-    File_wrapper file_05{parent_directory, "file_05.jpg"};
-    File_wrapper file_06{parent_directory, "file_06.mov"};
-    File_wrapper file_07{parent_directory, "file_07.mp4"};
-    File_wrapper file_08{parent_directory, "file_08.png"};
-    File_wrapper file_09{parent_directory, "file_09.txt"};
-    File_wrapper file_10{parent_directory, "file_10.pdf"};
-    File_wrapper file_11{parent_directory, "file_11.doc"};
+    DirectoryWrapper parent_directory;
+    FileWrapper file_01{parent_directory, "file_01.avi"};
+    FileWrapper file_02{parent_directory, "file_02.bmp"};
+    FileWrapper file_03{parent_directory, "file_03.heic"};
+    FileWrapper file_04{parent_directory, "file_04.jpeg"};
+    FileWrapper file_05{parent_directory, "file_05.jpg"};
+    FileWrapper file_06{parent_directory, "file_06.mov"};
+    FileWrapper file_07{parent_directory, "file_07.mp4"};
+    FileWrapper file_08{parent_directory, "file_08.png"};
+    FileWrapper file_09{parent_directory, "file_09.txt"};
+    FileWrapper file_10{parent_directory, "file_10.pdf"};
+    FileWrapper file_11{parent_directory, "file_11.doc"};
 
     const auto filenames{photo_video_renamer_.GetFilenamesFromDirectory(parent_directory.path())};
 
@@ -108,15 +108,15 @@ TEST_F(PhotoVideoRenamerTest, GetFilenamesFromDirectoryOnlyReturnsPhotosAndVideo
 
 TEST_F(PhotoVideoRenamerTest, GetFilenamesFromDirectoryReturnsFilenamesSorted)
 {
-    Directory_wrapper parent_directory;
-    File_wrapper file_1{parent_directory, "file_1.avi"};
-    File_wrapper file_2{parent_directory, "file_2.bmp"};
-    File_wrapper file_3{parent_directory, "file_3.heic"};
-    File_wrapper file_4{parent_directory, "file_4.jpeg"};
-    File_wrapper file_5{parent_directory, "file_5.jpg"};
-    File_wrapper file_6{parent_directory, "file_6.mov"};
-    File_wrapper file_7{parent_directory, "file_7.mp4"};
-    File_wrapper file_8{parent_directory, "file_8.png"};
+    DirectoryWrapper parent_directory;
+    FileWrapper file_1{parent_directory, "file_1.avi"};
+    FileWrapper file_2{parent_directory, "file_2.bmp"};
+    FileWrapper file_3{parent_directory, "file_3.heic"};
+    FileWrapper file_4{parent_directory, "file_4.jpeg"};
+    FileWrapper file_5{parent_directory, "file_5.jpg"};
+    FileWrapper file_6{parent_directory, "file_6.mov"};
+    FileWrapper file_7{parent_directory, "file_7.mp4"};
+    FileWrapper file_8{parent_directory, "file_8.png"};
 
     const auto filenames{photo_video_renamer_.GetFilenamesFromDirectory(parent_directory.path())};
 
@@ -185,7 +185,7 @@ TEST_F(PhotoVideoRenamerTest, CheckIfNewFilenamesAlreadyExistsDoesNotFindExistin
 
 TEST_F(PhotoVideoRenamerTest, RenameFilenamesDoesNotRenameIfFilenameDoesNotExist)
 {
-    Directory_wrapper parent_directory;
+    DirectoryWrapper parent_directory;
     fs::path non_existing_filename{parent_directory.path() / "file.jpg"};
     fs::path new_filename{parent_directory.path() / "1.jpg"};
 
@@ -194,8 +194,8 @@ TEST_F(PhotoVideoRenamerTest, RenameFilenamesDoesNotRenameIfFilenameDoesNotExist
 
 TEST_F(PhotoVideoRenamerTest, RenameFilenamesRenamesFilenames)
 {
-    Directory_wrapper parent_directory;
-    File_wrapper file{parent_directory, "file.jpg"};
+    DirectoryWrapper parent_directory;
+    FileWrapper file{parent_directory, "file.jpg"};
     fs::path new_filename{parent_directory.path() / "1.jpg"};
 
     ASSERT_TRUE(photo_video_renamer_.RenameFilenames({file.path()}, {new_filename}));
@@ -207,12 +207,12 @@ TEST_F(PhotoVideoRenamerTest, RenameFilenamesRenamesFilenames)
 
 TEST_F(PhotoVideoRenamerTest, RenamePhotosAndVideosFromDirectoryRenamesPhotosAndVideosFromDirectory)
 {
-    Directory_wrapper parent_directory;
-    File_wrapper file_1{parent_directory, "a.jpg"};
-    File_wrapper file_2{parent_directory, "2.jpg"};
-    File_wrapper file_3{parent_directory, "c.jpg"};
-    File_wrapper file_4{parent_directory, "4.jpg"};
-    File_wrapper file_5{parent_directory, "e.jpg"};
+    DirectoryWrapper parent_directory;
+    FileWrapper file_1{parent_directory, "a.jpg"};
+    FileWrapper file_2{parent_directory, "2.jpg"};
+    FileWrapper file_3{parent_directory, "c.jpg"};
+    FileWrapper file_4{parent_directory, "4.jpg"};
+    FileWrapper file_5{parent_directory, "e.jpg"};
 
     ASSERT_TRUE(photo_video_renamer_.RenamePhotosAndVideosFromDirectory(parent_directory.path()));
 

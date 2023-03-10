@@ -4,42 +4,42 @@
 #include <filesystem>
 #include <fstream>
 
-class Filesystem_wrapper
+class FilesystemWrapper
 {
 protected:
-    std::filesystem::path m_path;
+    std::filesystem::path path_;
 
-    Filesystem_wrapper() = default;
+    FilesystemWrapper() = default;
 
 public:
-    ~Filesystem_wrapper()
+    ~FilesystemWrapper()
     {
-        std::filesystem::remove_all(m_path);
+        std::filesystem::remove_all(path_);
     }
 
     const std::filesystem::path path() const
     {
-        return m_path;
+        return path_;
     }
 };
 
-class Directory_wrapper: public Filesystem_wrapper
+class DirectoryWrapper: public FilesystemWrapper
 {
 public:
-    Directory_wrapper()
+    DirectoryWrapper()
     {
-        m_path = std::tmpnam(nullptr);
-        std::filesystem::create_directory(m_path);
+        path_ = std::tmpnam(nullptr);
+        std::filesystem::create_directory(path_);
     }
 };
 
-class File_wrapper: public Filesystem_wrapper
+class FileWrapper: public FilesystemWrapper
 {
 public:
-    File_wrapper(const Directory_wrapper& parent_directory, const std::filesystem::path& filename)
+    FileWrapper(const DirectoryWrapper& parent_directory, const std::filesystem::path& filename)
     {
-        m_path = parent_directory.path();
-        m_path /= filename;
-        std::ofstream file{m_path};
+        path_ = parent_directory.path();
+        path_ /= filename;
+        std::ofstream file{path_};
     }
 };
