@@ -40,6 +40,8 @@ int main(int argc, const char** argv)
     progress.Stop();
     progress_worker.join();
 
+    printer.PrintMessage("\n");
+
     if(!renaming_result)
     {
         printer.PrintMessage(fmt::format("Error: Cannot rename photos and videos from directory {0}\n", directory.string()));
