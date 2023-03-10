@@ -40,6 +40,7 @@ target_link_libraries(photo_video_renamer
 add_executable(photo_video_renamer_test
     test/photo_video_renamer_test.cc
     test/printer_test.cc
+    test/progress_test.cc
 )
 
 find_package(gtest REQUIRED)

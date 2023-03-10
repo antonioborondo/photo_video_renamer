@@ -26,7 +26,7 @@ void Progress::IncrementRenamed(size_t amount)
 void Progress::PrintProgress()
 {
     const auto percentage{0 < total_ ? (renamed_ * 100) / total_ : 0};
-    const auto message{fmt::format("Renaming photos and videos {0}%", percentage)};
+    const auto message{fmt::format("Renaming {0}%", percentage)};
     printer_.PrintReplaceableMessage(message);
 }
 
