@@ -26,8 +26,6 @@ int main(int argc, const char** argv)
         directory = argv[1];
     }
 
-    directory = "U:\\test";
-
     if(!photo_video_renamer.DirectoryExists(directory))
     {
         printer.PrintMessage(fmt::format("Error: Directory {0} does not exist\n", directory.string()));
@@ -37,15 +35,17 @@ int main(int argc, const char** argv)
 
     std::thread progress_worker{std::ref(progress)};
 
-    if(!photo_video_renamer.RenamePhotosAndVideosFromDirectory(directory))
+    const auto renaming_result{photo_video_renamer.RenamePhotosAndVideosFromDirectory(directory)};
+
+    progress.Stop();
+    progress_worker.join();
+
+    if(!renaming_result)
     {
         printer.PrintMessage(fmt::format("Error: Cannot rename photos and videos from directory {0}\n", directory.string()));
 
         return 1;
     }
-
-    progress.Stop();
-    progress_worker.join();
 
     return 0;
 }
