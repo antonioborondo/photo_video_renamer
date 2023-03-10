@@ -10,6 +10,7 @@ add_library(photo_video_renamer_common STATIC
     src/percentage_calculator.cc
     src/photo_video_renamer.cc
     src/printer.cc
+    src/progress.cc
 )
 
 target_include_directories(photo_video_renamer_common

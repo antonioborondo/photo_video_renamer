@@ -1,19 +1,16 @@
 #pragma once
 
-#include "percentage_calculator.h"
-#include "printer.h"
+#include "progress.h"
 
 #include <filesystem>
 #include <vector>
 
 class PhotoVideoRenamer
 {
-    Printer printer_;
-
-    PercentageCalculator percentage_calculator_;
+    Progress progress_;
 
 public:
-    PhotoVideoRenamer(const Printer& printer);
+    PhotoVideoRenamer(const Progress& progress);
 
     bool DirectoryExists(const std::filesystem::path& directory);
 

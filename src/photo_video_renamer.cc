@@ -9,8 +9,8 @@
 
 namespace fs = std::filesystem;
 
-PhotoVideoRenamer::PhotoVideoRenamer(const Printer& printer):
-    printer_{printer}
+PhotoVideoRenamer::PhotoVideoRenamer(const Progress& progress):
+    progress_{progress}
 {
 }
 
@@ -91,7 +91,7 @@ bool PhotoVideoRenamer::RenameFilenames(const std::vector<fs::path>& filenames, 
         {
             fs::rename(filenames.at(i), new_filenames.at(i));
 
-            printer_.PrintReplaceableMessage(fmt::format("Renaming {0}", percentage_calculator_.CalculatePercentage(i + 1, filenames.size())));
+            progress_.IncrementRenamed(1);
         }
         catch(const fs::filesystem_error&)
         {
@@ -106,11 +106,15 @@ bool PhotoVideoRenamer::RenamePhotosAndVideosFromDirectory(const fs::path& direc
 {
     auto filenames{GetFilenamesFromDirectory(directory)};
 
+    progress_.IncrementTotal(filenames.size());
+
     auto new_filenames{GenerateNewFilenames(filenames)};
 
     const auto new_filenames_already_exist{CheckIfNewFilenamesAlreadyExist(filenames, new_filenames)};
     if(new_filenames_already_exist)
     {
+        progress_.IncrementTotal(filenames.size());
+
         int i{};
         std::vector<fs::path> temp_filenames;
         bool temp_filenames_already_exist{};
@@ -122,9 +126,7 @@ bool PhotoVideoRenamer::RenamePhotosAndVideosFromDirectory(const fs::path& direc
         }
         while(temp_filenames_already_exist);
 
-        percentage_calculator_.SetMode(PercentageCalculatorMode::kTempRenaming);
         RenameFilenames(filenames, temp_filenames);
-        percentage_calculator_.SetMode(PercentageCalculatorMode::kFinalRenaming);
 
         filenames = GetFilenamesFromDirectory(directory);
     }

@@ -1,5 +1,6 @@
 ﻿#include "photo_video_renamer.h"
 #include "printer.h"
+#include "progress.h"
 
 #include <fmt/format.h>
 
@@ -8,7 +9,8 @@
 int main(int argc, const char** argv)
 {
     Printer printer;
-    PhotoVideoRenamer photo_video_renamer{printer};
+    Progress progress{printer};
+    PhotoVideoRenamer photo_video_renamer{progress};
 
     if(2 < argc)
     {
