@@ -1,13 +1,21 @@
 ﻿#include "photo_video_renamer.h"
+#include "printer.h"
+#include "progress_tracker.h"
+
+#include <fmt/format.h>
 
 #include <filesystem>
-#include <iostream>
+#include <thread>
 
 int main(int argc, const char** argv)
 {
+    Printer printer;
+    ProgressTracker progress_tracker{printer};
+    PhotoVideoRenamer photo_video_renamer{progress_tracker};
+
     if(2 < argc)
     {
-        std::cout << "Usage: photo_video_renamer.exe [<directory>]" << std::endl;
+        printer.PrintMessage("Usage: photo_video_renamer.exe [<directory>]\n");
 
         return 1;
     }
@@ -18,16 +26,25 @@ int main(int argc, const char** argv)
         directory = argv[1];
     }
 
-    if(!directory_exists(directory))
+    if(!photo_video_renamer.DirectoryExists(directory))
     {
-        std::cout << "Error: Directory " << directory << " does not exist" << std::endl;
+        printer.PrintMessage(fmt::format("Error: Directory {0} does not exist\n", directory.string()));
 
         return 1;
     }
 
-    if(!rename_photos_and_videos_from_directory(directory))
+    std::thread progress_tracker_worker{std::ref(progress_tracker)};
+
+    const auto renaming_result{photo_video_renamer.RenamePhotosAndVideosFromDirectory(directory)};
+
+    progress_tracker.Stop();
+    progress_tracker_worker.join();
+
+    printer.PrintMessage("\n");
+
+    if(!renaming_result)
     {
-        std::cout << "Error: Cannot rename photos and videos from directory " << directory << std::endl;
+        printer.PrintMessage(fmt::format("Error: Cannot rename photos and videos from directory {0}\n", directory.string()));
 
         return 1;
     }

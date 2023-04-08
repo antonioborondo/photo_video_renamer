@@ -7,7 +7,9 @@ set(CMAKE_CXX_STANDARD 17)
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_BINARY_DIR})
 
 add_library(photo_video_renamer_common STATIC
-    src/photo_video_renamer.cpp
+    src/photo_video_renamer.cc
+    src/printer.cc
+    src/progress_tracker.cc
 )
 
 target_include_directories(photo_video_renamer_common
@@ -31,11 +33,14 @@ add_executable(photo_video_renamer
 
 target_link_libraries(photo_video_renamer
     PRIVATE
+    fmt::fmt
     photo_video_renamer_common
 )
 
 add_executable(photo_video_renamer_test
-    test/photo_video_renamer_test.cpp
+    test/photo_video_renamer_test.cc
+    test/printer_test.cc
+    test/progress_tracker_test.cc
 )
 
 find_package(gtest REQUIRED)
