@@ -1,16 +1,16 @@
 #pragma once
 
-#include "progress.h"
+#include "progress_tracker.h"
 
 #include <filesystem>
 #include <vector>
 
 class PhotoVideoRenamer
 {
-    Progress& progress_;
+    ProgressTracker& progress_tracker_;
 
 public:
-    PhotoVideoRenamer(Progress& progress);
+    PhotoVideoRenamer(ProgressTracker& progress);
 
     bool DirectoryExists(const std::filesystem::path& directory);
 

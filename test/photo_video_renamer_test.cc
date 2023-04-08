@@ -1,7 +1,7 @@
 #include "filesystem_wrappers.h"
 #include "photo_video_renamer.h"
 #include "printer.h"
-#include "progress.h"
+#include "progress_tracker.h"
 
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
@@ -18,15 +18,15 @@ class PhotoVideoRenamerTest: public testing::Test
 
     Printer printer_;
 
-    Progress progress_;
+    ProgressTracker progress_tracker_;
 
 protected:
     PhotoVideoRenamer photo_video_renamer_;
 
     PhotoVideoRenamerTest():
         printer_{sink_},
-        progress_{printer_},
-        photo_video_renamer_{progress_}
+        progress_tracker_{printer_},
+        photo_video_renamer_{progress_tracker_}
     {
     }
 };

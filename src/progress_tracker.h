@@ -2,7 +2,7 @@
 
 #include "printer.h"
 
-class Progress
+class ProgressTracker
 {
     size_t total_;
 
@@ -13,7 +13,7 @@ class Progress
     Printer& printer_;
 
 public:
-    Progress(Printer& printer);
+    ProgressTracker(Printer& printer);
 
     void IncrementTotal(size_t amount);
 

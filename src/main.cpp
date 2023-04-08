@@ -1,6 +1,6 @@
 ﻿#include "photo_video_renamer.h"
 #include "printer.h"
-#include "progress.h"
+#include "progress_tracker.h"
 
 #include <fmt/format.h>
 
@@ -10,8 +10,8 @@
 int main(int argc, const char** argv)
 {
     Printer printer;
-    Progress progress{printer};
-    PhotoVideoRenamer photo_video_renamer{progress};
+    ProgressTracker progress_tracker{printer};
+    PhotoVideoRenamer photo_video_renamer{progress_tracker};
 
     if(2 < argc)
     {
@@ -33,12 +33,12 @@ int main(int argc, const char** argv)
         return 1;
     }
 
-    std::thread progress_worker{std::ref(progress)};
+    std::thread progress_tracker_worker{std::ref(progress_tracker)};
 
     const auto renaming_result{photo_video_renamer.RenamePhotosAndVideosFromDirectory(directory)};
 
-    progress.Stop();
-    progress_worker.join();
+    progress_tracker.Stop();
+    progress_tracker_worker.join();
 
     printer.PrintMessage("\n");
 

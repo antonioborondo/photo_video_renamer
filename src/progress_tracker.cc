@@ -1,11 +1,11 @@
-#include "progress.h"
+#include "progress_tracker.h"
 
 #include <fmt/format.h>
 
 #include <chrono>
 #include <thread>
 
-Progress::Progress(Printer& printer):
+ProgressTracker::ProgressTracker(Printer& printer):
     total_{},
     renamed_{},
     stop_{},
@@ -13,29 +13,29 @@ Progress::Progress(Printer& printer):
 {
 }
 
-void Progress::IncrementTotal(size_t amount)
+void ProgressTracker::IncrementTotal(size_t amount)
 {
     total_ += amount;
 }
 
-void Progress::IncrementRenamed(size_t amount)
+void ProgressTracker::IncrementRenamed(size_t amount)
 {
     renamed_ += amount;
 }
 
-void Progress::PrintProgress()
+void ProgressTracker::PrintProgress()
 {
     const auto percentage{0 < total_ ? (renamed_ * 100) / total_ : 0};
     const auto message{fmt::format("Renaming {0}%", percentage)};
     printer_.PrintReplaceableMessage(message);
 }
 
-void Progress::Stop()
+void ProgressTracker::Stop()
 {
     stop_ = true;
 }
 
-void Progress::operator()()
+void ProgressTracker::operator()()
 {
     while(!stop_)
     {

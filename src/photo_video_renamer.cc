@@ -9,8 +9,8 @@
 
 namespace fs = std::filesystem;
 
-PhotoVideoRenamer::PhotoVideoRenamer(Progress& progress):
-    progress_{progress}
+PhotoVideoRenamer::PhotoVideoRenamer(ProgressTracker& progress_tracker):
+    progress_tracker_{progress_tracker}
 {
 }
 
@@ -91,7 +91,7 @@ bool PhotoVideoRenamer::RenameFilenames(const std::vector<fs::path>& filenames, 
         {
             fs::rename(filenames.at(i), new_filenames.at(i));
 
-            progress_.IncrementRenamed(1);
+            progress_tracker_.IncrementRenamed(1);
         }
         catch(const fs::filesystem_error&)
         {
@@ -106,14 +106,14 @@ bool PhotoVideoRenamer::RenamePhotosAndVideosFromDirectory(const fs::path& direc
 {
     auto filenames{GetFilenamesFromDirectory(directory)};
 
-    progress_.IncrementTotal(filenames.size());
+    progress_tracker_.IncrementTotal(filenames.size());
 
     auto new_filenames{GenerateNewFilenames(filenames)};
 
     const auto new_filenames_already_exist{CheckIfNewFilenamesAlreadyExist(filenames, new_filenames)};
     if(new_filenames_already_exist)
     {
-        progress_.IncrementTotal(filenames.size());
+        progress_tracker_.IncrementTotal(filenames.size());
 
         int i{};
         std::vector<fs::path> temp_filenames;
