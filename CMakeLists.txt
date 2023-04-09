@@ -28,7 +28,7 @@ target_link_libraries(photo_video_renamer_common
 )
 
 add_executable(photo_video_renamer
-    src/main.cpp
+    src/main.cc
 )
 
 target_link_libraries(photo_video_renamer
