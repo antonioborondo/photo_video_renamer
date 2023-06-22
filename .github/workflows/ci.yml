@@ -27,11 +27,13 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
       - name: Install Conan
-        run: pip install conan==1.55.0
+        run: pip install conan==2.0.7
+      - name: Configure Conan
+        run: conan profile detect
       - name: Install packages
-        run: conan install . --install-folder build --build missing --settings compiler=msvc --settings compiler.cppstd=17 --settings compiler.runtime=dynamic --settings compiler.version=193 --settings build_type=Release
+        run: conan install . --output-folder=build --build=missing --settings compiler=msvc --settings compiler.cppstd=17 --settings compiler.runtime=dynamic --settings compiler.version=193 --settings build_type=Release
       - name: Configure
-        run: cmake -G "Visual Studio 17 2022" -B build -DCMAKE_BUILD_TYPE=Release
+        run: cmake -G "Visual Studio 17 2022" -B build -DCMAKE_TOOLCHAIN_FILE="build/conan_toolchain.cmake"
       - name: Build
         run: cmake --build build --config Release
       - name: Test
