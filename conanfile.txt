@@ -4,4 +4,6 @@ fmt/10.0.0
 gtest/cci.20210126
 
 [generators]
+CMake
 CMakeDeps
+CMakeToolchain
