@@ -33,7 +33,7 @@ jobs:
       - name: Install packages
         run: conan install . --output-folder=build --build=missing --settings compiler=msvc --settings compiler.cppstd=17 --settings compiler.runtime=dynamic --settings compiler.version=193 --settings build_type=Release
       - name: Configure
-        run: cmake -G "Visual Studio 17 2022" -B build
+        run: cmake -G "Visual Studio 17 2022" -B build -DCMAKE_TOOLCHAIN_FILE=build/conan_toolchain.cmake
       - name: Build
         run: cmake --build build --config Release
       - name: Test
