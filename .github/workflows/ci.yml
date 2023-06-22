@@ -34,6 +34,7 @@ jobs:
           path: |
             $HOME\.conan
             C:\.conan
+          key: ${{ runner.os }}
       - name: Install packages
         run: conan install . --install-folder build --build missing --settings compiler=msvc --settings compiler.cppstd=17 --settings compiler.runtime=dynamic --settings compiler.version=193 --settings build_type=Release
       - name: Configure
