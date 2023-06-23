@@ -31,7 +31,7 @@ jobs:
       - name: Configure Conan
         run: conan profile detect
       - name: Install Conan packages
-        run: conan install . --output-folder=build --build=missing --settings compiler=msvc --settings compiler.cppstd=17 --settings compiler.runtime=dynamic --settings compiler.version=193
+        run: conan install . --output-folder=build --build=missing
       - name: Configure
         run: cmake --preset conan-default
       - name: Build
