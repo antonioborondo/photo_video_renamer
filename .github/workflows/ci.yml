@@ -31,14 +31,14 @@ jobs:
       - name: Configure Conan
         run: conan profile detect
       - name: Install Conan packages
-        run: conan install . --output-folder=build --build=missing --settings compiler=msvc --settings compiler.cppstd=17 --settings compiler.runtime=dynamic --settings compiler.version=193 --settings build_type=Release
+        run: conan install . --output-folder=build --build=missing --settings compiler=msvc --settings compiler.cppstd=17 --settings compiler.runtime=dynamic --settings compiler.version=193
       - name: Configure
-        run: cmake -G "Visual Studio 17 2022" -B build
+        run: cmake --preset conan-default
       - name: Build
-        run: cmake --build build --config Release
+        run: cmake --build --preset conan-release
       - name: Test
         working-directory: build
-        run: ctest -C Release -V
+        run: ctest --verbose --preset conan-release
       - name: Install EnVar plug-in for NSIS
         run: Invoke-WebRequest -Uri https://nsis.sourceforge.io/mediawiki/images/7/7f/EnVar_plugin.zip -OutFile EnVar_plugin.zip; 7z x EnVar_plugin.zip -o"C:\Program Files (x86)\NSIS"
       - name: Pack
