@@ -22,7 +22,22 @@ jobs:
         clangFormatVersion: 13
   build:
     needs: clang-format
-    runs-on: windows-2022
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-2022, ubuntu-22.04]
+        include:
+          - os: windows-2022
+            compiler: msvc
+            cmakePreset: conan-default
+            cpackGenerator: NSIS
+            publishExtension: exe
+          - os: ubuntu-22.04
+            compiler: gcc
+            cmakePreset: conan-release
+            cpackGenerator: DEB
+            publishExtension: deb
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -31,9 +46,9 @@ jobs:
       - name: Configure Conan
         run: conan profile detect
       - name: Install Conan packages
-        run: conan install . --output-folder=build --build=missing --settings compiler=msvc --settings compiler.cppstd=17 --settings build_type=Release
+        run: conan install . --output-folder=build --build=missing --settings compiler=${{ matrix.compiler }} --settings compiler.cppstd=17 --settings build_type=Release
       - name: Configure
-        run: cmake --preset conan-default
+        run: cmake --preset ${{ matrix.cmakePreset }}
       - name: Build
         run: cmake --build --preset conan-release
       - name: Test
@@ -41,10 +56,11 @@ jobs:
         run: ctest --verbose --preset conan-release
       - name: Install EnVar plug-in for NSIS
         run: Invoke-WebRequest -Uri https://nsis.sourceforge.io/mediawiki/images/7/7f/EnVar_plugin.zip -OutFile EnVar_plugin.zip; 7z x EnVar_plugin.zip -o"C:\Program Files (x86)\NSIS"
+        if: runner.os == 'Windows'
       - name: Pack
         working-directory: build
-        run: cpack -G "NSIS"
+        run: cpack -G "${{ matrix.cpackGenerator }}"
       - name: Publish
         uses: actions/upload-artifact@v3
         with:
-          path: build/photo_video_renamer*.exe
+          path: build/photo_video_renamer*.${{ matrix.publishExtension }}
