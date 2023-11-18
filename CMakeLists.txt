@@ -17,7 +17,7 @@ target_include_directories(photo_video_renamer_common
     src
 )
 
-find_package(boost COMPONENTS filesystem REQUIRED)
+find_package(Boost COMPONENTS filesystem REQUIRED)
 find_package(fmt REQUIRED)
 
 target_link_libraries(photo_video_renamer_common
@@ -43,7 +43,7 @@ add_executable(photo_video_renamer_test
     test/progress_tracker_test.cc
 )
 
-find_package(gtest REQUIRED)
+find_package(GTest REQUIRED)
 
 target_link_libraries(photo_video_renamer_test
     PRIVATE
