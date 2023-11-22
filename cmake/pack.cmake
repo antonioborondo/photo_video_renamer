@@ -40,8 +40,4 @@ if(WIN32)
     )
 endif()
 
-if(NOT WIN32)
-    set(CPACK_PACKAGE_CONTACT "Antonio Borondo <antonioborondo@outlook.com>")
-endif()
-
 include(CPack)
