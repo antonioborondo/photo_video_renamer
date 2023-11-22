@@ -22,7 +22,6 @@ jobs:
         clangFormatVersion: 13
   build:
     needs: clang-format
-    runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
@@ -38,6 +37,7 @@ jobs:
             cmakePreset: conan-release
             cpackGenerator: DEB
             publishExtension: deb
+    runs-on: ${{ matrix.os }}
     steps:
       - name: Checkout
         uses: actions/checkout@v3
