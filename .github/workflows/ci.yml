@@ -48,7 +48,7 @@ jobs:
       - name: Install Conan packages
         run: conan install . --output-folder=build --build=missing --settings compiler=${{ matrix.compiler }} --settings compiler.cppstd=17 --settings build_type=Release
       - name: Configure
-        run: cmake --preset ${{ matrix.cmakePreset }}
+        run: cmake --preset ${{ matrix.cmakePreset }} -DCPACK_PACKAGE_CONTACT="${{ secrets.CONTACT }}"
       - name: Build
         run: cmake --build --preset conan-release
       - name: Test
