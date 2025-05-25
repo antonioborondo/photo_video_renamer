@@ -135,7 +135,7 @@ bool PhotoVideoRenamer::RenamePhotosAndVideosFromDirectory(const fs::path& direc
     return RenameFilenames(filenames, new_filenames);
 }
 
-std::string getDateTaken(const fs::path& filename)
+std::string PhotoVideoRenamer::GetDateTaken(const fs::path& filename)
 {
     try
     {

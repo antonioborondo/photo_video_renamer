@@ -26,5 +26,5 @@ public:
 
     bool RenamePhotosAndVideosFromDirectory(const std::filesystem::path& directory);
 
-    std::string getDateTaken(const std::filesystem::path& filename);
+    std::string GetDateTaken(const std::filesystem::path& filename);
 };

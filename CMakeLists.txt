@@ -52,6 +52,7 @@ target_link_libraries(photo_video_renamer_test
     GTest::gmock
     GTest::gtest_main
     photo_video_renamer_common
+        exiv2::exiv2
 )
 
 enable_testing()
