@@ -41,5 +41,11 @@ public:
         path_ = parent_directory.path();
         path_ /= filename;
         std::ofstream file{path_};
+
+                unsigned char minimalJpeg[] = {
+            0xFF, 0xD8,             // SOI marker
+            0xFF, 0xD9              // EOI marker
+        };
+        file.write(reinterpret_cast<char*>(minimalJpeg), sizeof(minimalJpeg));
     }
 };

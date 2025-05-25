@@ -234,10 +234,10 @@ TEST_F(PhotoVideoRenamerTest, ExistingFileIsNotDirectory2)
     std::string image_path{"/home/antonioborondo/Pictures/Webcam/2025-05-25-200754.jpg"};
     std::string my_date = "2025:05:25 12:34:56";
 
-/*     try
+    try
     {
         // Load image
-        Exiv2::Image::UniquePtr image = Exiv2::ImageFactory::open(image_path);
+        Exiv2::Image::UniquePtr image = Exiv2::ImageFactory::open(file.path().string());
         assert(image.get() != 0);
         image->readMetadata();
 
@@ -263,9 +263,9 @@ TEST_F(PhotoVideoRenamerTest, ExistingFileIsNotDirectory2)
     {
         std::cerr << "Error: " << e.what() << std::endl;
 
-    } */
+    }
 
-    auto date_taken = photo_video_renamer_.GetDateTaken(image_path);
+    auto date_taken = photo_video_renamer_.GetDateTaken(file.path());
 
     std::cout << date_taken << std::endl;
     ASSERT_STREQ(date_taken.c_str(), my_date.c_str());
