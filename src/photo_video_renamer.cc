@@ -139,7 +139,7 @@ std::string getDateTaken(const fs::path& filename)
 {
     try
     {
-        Exiv2::Image::AutoPtr image = Exiv2::ImageFactory::open(filename.string());
+        auto image = Exiv2::ImageFactory::open(filename.string());
         image->readMetadata();
         Exiv2::ExifData& exifData = image->exifData();
         auto it = exifData.findKey(Exiv2::ExifKey("Exif.Photo.DateTimeOriginal"));
