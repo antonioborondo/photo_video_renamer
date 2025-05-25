@@ -3,9 +3,9 @@
 #include "printer.h"
 #include "progress_tracker.h"
 
+#include <exiv2/exiv2.hpp>
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
-#include <exiv2/exiv2.hpp>
 
 #include <cstdio>
 #include <filesystem>
@@ -230,7 +230,6 @@ TEST_F(PhotoVideoRenamerTest, ExistingFileIsNotDirectory2)
     DirectoryWrapper parent_directory;
     FileWrapper file{parent_directory, "file.jpg"};
 
-
     std::string image_path{"/home/antonioborondo/Pictures/Webcam/2025-05-25-200754.jpg"};
     std::string my_date = "2025:05:25 12:34:56";
 
@@ -262,7 +261,6 @@ TEST_F(PhotoVideoRenamerTest, ExistingFileIsNotDirectory2)
     catch(Exiv2::Error& e)
     {
         std::cerr << "Error: " << e.what() << std::endl;
-
     }
 
     auto date_taken = photo_video_renamer_.GetDateTaken(file.path());
