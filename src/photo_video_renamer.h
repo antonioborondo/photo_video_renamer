@@ -25,4 +25,6 @@ public:
     bool RenameFilenames(const std::vector<std::filesystem::path>& filenames, const std::vector<std::filesystem::path>& new_filenames);
 
     bool RenamePhotosAndVideosFromDirectory(const std::filesystem::path& directory);
+
+    std::string getDateTaken(const std::filesystem::path& filename)
 };

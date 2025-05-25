@@ -223,3 +223,43 @@ TEST_F(PhotoVideoRenamerTest, RenamePhotosAndVideosFromDirectoryRenamesPhotosAnd
 
     ASSERT_THAT(photo_video_renamer_.GetFilenamesFromDirectory(parent_directory.path()), testing::ElementsAre(fs::path{parent_directory.path() / "1.jpg"}, fs::path{parent_directory.path() / "2.jpg"}, fs::path{parent_directory.path() / "3.jpg"}, fs::path{parent_directory.path() / "4.jpg"}, fs::path{parent_directory.path() / "5.jpg"}));
 }
+
+TEST_F(PhotoVideoRenamerTest, ExistingFileIsNotDirectory)
+{
+    DirectoryWrapper parent_directory;
+    FileWrapper file{parent_directory, "file.jpg"};
+
+    try {
+        // Load image
+        Exiv2::Image::UniquePtr image = Exiv2::ImageFactory::open(file.path());
+        assert(image.get() != 0);
+        image->readMetadata();
+
+        // Access and modify the Exif data
+        Exiv2::ExifData &exifData = image->exifData();
+        if (exifData.empty()) {
+            std::cerr << "No EXIF data found in the file.\n";
+        }
+
+        // Set DateTimeOriginal (e.g., "2025:05:25 12:34:56")
+        std::string my_date = "2025:05:25 12:34:56";
+        exifData["Exif.Photo.DateTimeOriginal"] = my_date.c_str();
+        exifData["Exif.Image.Make"] = "MyCameraMaker";
+        exifData["Exif.Image.Model"] = "ModelX";
+
+        // Save metadata
+        image->setExifData(exifData);
+        image->writeMetadata();
+
+        std::cout << "EXIF metadata added successfully.\n";
+    } catch (Exiv2::AnyError& e) {
+        std::cerr << "Error: " << e.what() << std::endl;
+        return 1;
+    }
+
+    auto date_taken = photo_video_renamer_.GetDateTaken(file.path());
+
+    std::cout << date_taken << std::endl;
+
+    ASSERT_STEQ(date_taken.c_str(), my_date.c_str());
+}

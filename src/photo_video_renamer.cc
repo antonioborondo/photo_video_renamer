@@ -1,6 +1,7 @@
 #include "photo_video_renamer.h"
 
 #include <boost/algorithm/string.hpp>
+#include <exiv2/exiv2.hpp>
 #include <fmt/format.h>
 #include <natural_sort/natural_sort.hpp>
 
@@ -132,4 +133,24 @@ bool PhotoVideoRenamer::RenamePhotosAndVideosFromDirectory(const fs::path& direc
     }
 
     return RenameFilenames(filenames, new_filenames);
+}
+
+std::string getDateTaken(const fs::path& filename)
+{
+    try
+    {
+        Exiv2::Image::AutoPtr image = Exiv2::ImageFactory::open(filename.string());
+        image->readMetadata();
+        Exiv2::ExifData& exifData = image->exifData();
+        auto it = exifData.findKey(Exiv2::ExifKey("Exif.Photo.DateTimeOriginal"));
+        if(it != exifData.end())
+        {
+            return it->toString(); // Usually in "YYYY:MM:DD HH:MM:SS"
+        }
+    }
+    catch(Exiv2::Error& e)
+    {
+        std::cerr << "Error reading " << filename << ": " << e.what() << "\n";
+    }
+    return ""; // fallback if date not found
 }
