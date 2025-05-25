@@ -229,15 +229,17 @@ TEST_F(PhotoVideoRenamerTest, ExistingFileIsNotDirectory)
     DirectoryWrapper parent_directory;
     FileWrapper file{parent_directory, "file.jpg"};
 
-    try {
+    try
+    {
         // Load image
         Exiv2::Image::UniquePtr image = Exiv2::ImageFactory::open(file.path());
         assert(image.get() != 0);
         image->readMetadata();
 
         // Access and modify the Exif data
-        Exiv2::ExifData &exifData = image->exifData();
-        if (exifData.empty()) {
+        Exiv2::ExifData& exifData = image->exifData();
+        if(exifData.empty())
+        {
             std::cerr << "No EXIF data found in the file.\n";
         }
 
@@ -252,7 +254,9 @@ TEST_F(PhotoVideoRenamerTest, ExistingFileIsNotDirectory)
         image->writeMetadata();
 
         std::cout << "EXIF metadata added successfully.\n";
-    } catch (Exiv2::AnyError& e) {
+    }
+    catch(Exiv2::AnyError& e)
+    {
         std::cerr << "Error: " << e.what() << std::endl;
         return 1;
     }
