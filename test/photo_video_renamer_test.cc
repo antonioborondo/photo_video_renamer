@@ -227,7 +227,7 @@ TEST_F(PhotoVideoRenamerTest, RenamePhotosAndVideosFromDirectoryRenamesPhotosAnd
 
 void WriteDateTaken(const std::filesystem::path& filename, const std::string& date)
 {
-      try
+    try
     {
         // Load image
         Exiv2::Image::UniquePtr image = Exiv2::ImageFactory::open(filename.string());
@@ -318,7 +318,6 @@ TEST_F(PhotoVideoRenamerTest, GenerateNewFilenamesByDateTaken)
 
     const std::vector<fs::path> filenames{file_1.path(), file_2.path(), file_3.path(), file_4.path(), file_5.path()};
     const std::vector<fs::path> new_filenames{fs::path{"1"}, fs::path{"5"}, fs::path{"2"}, fs::path{"4"}, fs::path{"3"}};
-
 
     auto new_filenames_generated = photo_video_renamer_.GetFilenamesFromDirectory(parent_directory.path(), PhotoVideoRenamer::Sort::DateTaken);
 

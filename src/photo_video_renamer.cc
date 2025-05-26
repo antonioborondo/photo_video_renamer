@@ -45,11 +45,11 @@ std::vector<fs::path> PhotoVideoRenamer::GetFilenamesFromDirectory(const fs::pat
         {
             if(sort == PhotoVideoRenamer::Sort::Natural)
             {
-              return SI::natural::compare<std::wstring>(filename_1.filename().wstring(), filename_2.filename().wstring());
+                return SI::natural::compare<std::wstring>(filename_1.filename().wstring(), filename_2.filename().wstring());
             }
             else if(sort == PhotoVideoRenamer::Sort::DateTaken)
             {
-              return GetDateTaken(filename_1.string()) < GetDateTaken(filename_2.wstring());
+                return GetDateTaken(filename_1.string()) < GetDateTaken(filename_2.wstring());
             }
         });
 

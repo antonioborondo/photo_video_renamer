@@ -18,8 +18,8 @@ public:
 
     enum class Sort
     {
-      Natural,
-      DateTaken,
+        Natural,
+        DateTaken,
     };
 
     std::vector<std::filesystem::path> GetFilenamesFromDirectory(const std::filesystem::path& directory, Sort sort = Sort::Natural);
