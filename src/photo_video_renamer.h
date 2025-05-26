@@ -16,11 +16,17 @@ public:
 
     bool FilenameIsPhotoOrVideo(const std::filesystem::path& filename);
 
-    std::vector<std::filesystem::path> GetFilenamesFromDirectory(const std::filesystem::path& directory);
+    enum class Sort
+    {
+      Natural,
+      DateTaken,
+    };
+
+    std::vector<std::filesystem::path> GetFilenamesFromDirectory(const std::filesystem::path& directory, Sort sort = Sort::Natural);
 
     std::vector<std::filesystem::path> GenerateNewFilenames(const std::vector<std::filesystem::path>& filenames, const std::string& prefix = "");
 
-        std::vector<std::filesystem::path> GenerateNewFilenamesByDateTaken(const std::vector<std::filesystem::path>& filenames, const std::string& prefix = "");
+    std::vector<std::filesystem::path> GenerateNewFilenamesByDateTaken(const std::vector<std::filesystem::path>& filenames, const std::string& prefix = "");
 
     bool CheckIfNewFilenamesAlreadyExist(const std::vector<std::filesystem::path>& filenames, const std::vector<std::filesystem::path>& new_filenames);
 

@@ -320,7 +320,7 @@ TEST_F(PhotoVideoRenamerTest, GenerateNewFilenamesByDateTaken)
     const std::vector<fs::path> new_filenames{fs::path{"1"}, fs::path{"5"}, fs::path{"2"}, fs::path{"4"}, fs::path{"3"}};
 
 
-    auto new_filenames_generated = photo_video_renamer_.GenerateNewFilenamesByDateTaken(filenames);
+    auto new_filenames_generated = photo_video_renamer_.GetFilenamesFromDirectory(parent_directory.path(), PhotoVideoRenamer::Sort::DateTaken);
 
-    ASSERT_THAT(new_filenames_generated, testing::ElementsAre(fs::path{parent_directory.path() / "1.jpg"}, fs::path{parent_directory.path() / "5.jpg"}, fs::path{parent_directory.path() / "2.jpg"}, fs::path{parent_directory.path() / "4.jpg"}, fs::path{parent_directory.path() / "3.jpg"}));
+    ASSERT_THAT(new_filenames_generated, testing::ElementsAre(fs::path{parent_directory.path() / "file_1.jpg"}, fs::path{parent_directory.path() / "file_3.jpg"}, fs::path{parent_directory.path() / "file_5.jpg"}, fs::path{parent_directory.path() / "file_4.jpg"}, fs::path{parent_directory.path() / "file_2.jpg"}));
 }

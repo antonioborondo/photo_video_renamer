@@ -29,7 +29,7 @@ bool PhotoVideoRenamer::FilenameIsPhotoOrVideo(const fs::path& filename)
     return std::regex_match(filename_extension, photo_and_video_extensions);
 }
 
-std::vector<fs::path> PhotoVideoRenamer::GetFilenamesFromDirectory(const fs::path& directory)
+std::vector<fs::path> PhotoVideoRenamer::GetFilenamesFromDirectory(const fs::path& directory, PhotoVideoRenamer::Sort sort)
 {
     std::vector<fs::path> filenames;
 
@@ -41,9 +41,16 @@ std::vector<fs::path> PhotoVideoRenamer::GetFilenamesFromDirectory(const fs::pat
         }
     }
 
-    std::sort(filenames.begin(), filenames.end(), [](const fs::path& filename_1, const fs::path& filename_2)
+    std::sort(filenames.begin(), filenames.end(), [&](const fs::path& filename_1, const fs::path& filename_2)
         {
-            return SI::natural::compare<std::wstring>(filename_1.filename().wstring(), filename_2.filename().wstring());
+            if(sort == PhotoVideoRenamer::Sort::Natural)
+            {
+              return SI::natural::compare<std::wstring>(filename_1.filename().wstring(), filename_2.filename().wstring());
+            }
+            else if(sort == PhotoVideoRenamer::Sort::DateTaken)
+            {
+              return GetDateTaken(filename_1.string()) < GetDateTaken(filename_2.wstring());
+            }
         });
 
     return filenames;
