@@ -20,6 +20,8 @@ public:
 
     std::vector<std::filesystem::path> GenerateNewFilenames(const std::vector<std::filesystem::path>& filenames, const std::string& prefix = "");
 
+        std::vector<std::filesystem::path> GenerateNewFilenamesByDateTaken(const std::vector<std::filesystem::path>& filenames, const std::string& prefix = "");
+
     bool CheckIfNewFilenamesAlreadyExist(const std::vector<std::filesystem::path>& filenames, const std::vector<std::filesystem::path>& new_filenames);
 
     bool RenameFilenames(const std::vector<std::filesystem::path>& filenames, const std::vector<std::filesystem::path>& new_filenames);

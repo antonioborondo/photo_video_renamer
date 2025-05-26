@@ -225,6 +225,39 @@ TEST_F(PhotoVideoRenamerTest, RenamePhotosAndVideosFromDirectoryRenamesPhotosAnd
     ASSERT_THAT(photo_video_renamer_.GetFilenamesFromDirectory(parent_directory.path()), testing::ElementsAre(fs::path{parent_directory.path() / "1.jpg"}, fs::path{parent_directory.path() / "2.jpg"}, fs::path{parent_directory.path() / "3.jpg"}, fs::path{parent_directory.path() / "4.jpg"}, fs::path{parent_directory.path() / "5.jpg"}));
 }
 
+void WriteDateTaken(const std::filesystem::path& filename, const std::string& date)
+{
+      try
+    {
+        // Load image
+        Exiv2::Image::UniquePtr image = Exiv2::ImageFactory::open(filename.string());
+        assert(image.get() != 0);
+        image->readMetadata();
+
+        // Access and modify the Exif data
+        Exiv2::ExifData& exifData = image->exifData();
+        if(exifData.empty())
+        {
+            std::cerr << "No EXIF data found in the file.\n";
+        }
+
+        // Set DateTimeOriginal (e.g., "2025:05:25 12:34:56")
+        exifData["Exif.Photo.DateTimeOriginal"] = date.c_str();
+        exifData["Exif.Image.Make"] = "MyCameraMaker";
+        exifData["Exif.Image.Model"] = "ModelX";
+
+        // Save metadata
+        image->setExifData(exifData);
+        image->writeMetadata();
+
+        std::cout << "EXIF metadata added successfully.\n";
+    }
+    catch(Exiv2::Error& e)
+    {
+        std::cerr << "Error: " << e.what() << std::endl;
+    }
+}
+
 TEST_F(PhotoVideoRenamerTest, ExistingFileIsNotDirectory2)
 {
     DirectoryWrapper parent_directory;
@@ -266,4 +299,28 @@ TEST_F(PhotoVideoRenamerTest, ExistingFileIsNotDirectory2)
 
     std::cout << date_taken << std::endl;
     ASSERT_STREQ(date_taken.c_str(), my_date.c_str());
+}
+
+TEST_F(PhotoVideoRenamerTest, GenerateNewFilenamesByDateTaken)
+{
+    DirectoryWrapper parent_directory;
+    FileWrapper file_1{parent_directory, "file_1.jpg", FileWrapper::FileType::Photo};
+    FileWrapper file_2{parent_directory, "file_2.jpg", FileWrapper::FileType::Photo};
+    FileWrapper file_3{parent_directory, "file_3.jpg", FileWrapper::FileType::Photo};
+    FileWrapper file_4{parent_directory, "file_4.jpg", FileWrapper::FileType::Photo};
+    FileWrapper file_5{parent_directory, "file_5.jpg", FileWrapper::FileType::Photo};
+
+    WriteDateTaken(file_1.path(), "2025:05:23 12:01:00");
+    WriteDateTaken(file_2.path(), "2025:05:23 12:05:00");
+    WriteDateTaken(file_3.path(), "2025:05:23 12:02:00");
+    WriteDateTaken(file_4.path(), "2025:05:23 12:04:00");
+    WriteDateTaken(file_5.path(), "2025:05:23 12:03:00");
+
+    const std::vector<fs::path> filenames{file_1.path(), file_2.path(), file_3.path(), file_4.path(), file_5.path()};
+    const std::vector<fs::path> new_filenames{fs::path{"1"}, fs::path{"5"}, fs::path{"2"}, fs::path{"4"}, fs::path{"3"}};
+
+
+    auto new_filenames_generated = photo_video_renamer_.GenerateNewFilenamesByDateTaken(filenames);
+
+    ASSERT_THAT(new_filenames_generated, testing::ElementsAre(fs::path{parent_directory.path() / "1.jpg"}, fs::path{parent_directory.path() / "5.jpg"}, fs::path{parent_directory.path() / "2.jpg"}, fs::path{parent_directory.path() / "4.jpg"}, fs::path{parent_directory.path() / "3.jpg"}));
 }

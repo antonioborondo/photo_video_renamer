@@ -73,6 +73,30 @@ std::vector<fs::path> PhotoVideoRenamer::GenerateNewFilenames(const std::vector<
     return new_filenames;
 }
 
+std::vector<fs::path> PhotoVideoRenamer::GenerateNewFilenamesByDateTaken(const std::vector<fs::path>& filenames, const std::string& prefix)
+{
+    const auto number_digits_filename{std::to_string(filenames.size()).length()};
+
+    std::vector<fs::path> new_filenames;
+
+    for(size_t i{}; i < filenames.size(); ++i)
+    {
+        const auto filename{filenames.at(i)};
+
+        const auto new_filename_number{fmt::format("{:0{}}", i + 1, number_digits_filename)};
+
+        auto new_filename_extension{filename.extension().string()};
+
+        std::transform(new_filename_extension.begin(), new_filename_extension.end(), new_filename_extension.begin(), ::tolower);
+
+        const auto new_filename{filename.parent_path() / fs::path{prefix + new_filename_number + new_filename_extension}};
+
+        new_filenames.push_back(new_filename);
+    }
+
+    return new_filenames;
+}
+
 bool PhotoVideoRenamer::CheckIfNewFilenamesAlreadyExist(const std::vector<fs::path>& filenames, const std::vector<fs::path>& new_filenames)
 {
     return std::any_of(filenames.begin(), filenames.end(), [&](const fs::path& filename)
