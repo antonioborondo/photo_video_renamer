@@ -136,7 +136,7 @@ bool PhotoVideoRenamer::RenameFilenames(const std::vector<fs::path>& filenames, 
 
 bool PhotoVideoRenamer::RenamePhotosAndVideosFromDirectory(const fs::path& directory)
 {
-    auto filenames{GetFilenamesFromDirectory(directory)};
+    auto filenames{GetFilenamesFromDirectory(directory, Sort::DateTaken)};
 
     progress_tracker_.IncrementTotal(filenames.size());
 
@@ -160,7 +160,7 @@ bool PhotoVideoRenamer::RenamePhotosAndVideosFromDirectory(const fs::path& direc
 
         RenameFilenames(filenames, temp_filenames);
 
-        filenames = GetFilenamesFromDirectory(directory);
+        filenames = GetFilenamesFromDirectory(directory, Sort::DateTaken);
     }
 
     return RenameFilenames(filenames, new_filenames);
