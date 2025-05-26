@@ -20,7 +20,7 @@ target_include_directories(photo_video_renamer_common
 find_package(Boost COMPONENTS filesystem REQUIRED)
 find_package(exiv2 REQUIRED)
 find_package(fmt REQUIRED)
-find_package(MediaInfo REQUIRED)
+find_package(MediaInfo CONFIG REQUIRED)
 
 target_link_libraries(photo_video_renamer_common
     PRIVATE
