@@ -228,9 +228,8 @@ TEST_F(PhotoVideoRenamerTest, RenamePhotosAndVideosFromDirectoryRenamesPhotosAnd
 TEST_F(PhotoVideoRenamerTest, ExistingFileIsNotDirectory2)
 {
     DirectoryWrapper parent_directory;
-    FileWrapper file{parent_directory, "file.jpg"};
+    FileWrapper file{parent_directory, "file.jpg", FileWrapper::FileType::Photo};
 
-    std::string image_path{"/home/antonioborondo/Pictures/Webcam/2025-05-25-200754.jpg"};
     std::string my_date = "2025:05:25 12:34:56";
 
     try

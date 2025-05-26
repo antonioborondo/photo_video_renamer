@@ -37,23 +37,20 @@ public:
 
 class FileWrapper: public FilesystemWrapper
 {
-    bool FilenameIsPhoto(const std::filesystem::path& filename)
-    {
-        const std::regex photo_extensions{".jpg", std::regex_constants::icase};
-
-        const auto filename_extension{filename.extension().string()};
-
-        return std::regex_match(filename_extension, photo_extensions);
-    }
-
 public:
-    FileWrapper(const DirectoryWrapper& parent_directory, const std::filesystem::path& filename)
+    enum class FileType
+    {
+        Text,
+        Photo,
+    };
+
+    FileWrapper(const DirectoryWrapper& parent_directory, const std::filesystem::path& filename, FileType file_type = FileType::Text)
     {
         path_ = parent_directory.path();
         path_ /= filename;
         std::ofstream file{path_};
 
-        if(FilenameIsPhoto(filename))
+        if(file_type == FileType::Photo)
         {
             std::vector<std::byte> photo_header = {
                 std::byte{0xFF}, // Start of marker
