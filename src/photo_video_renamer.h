@@ -14,6 +14,10 @@ public:
 
     bool DirectoryExists(const std::filesystem::path& directory);
 
+    bool FilenameIsPhoto(const std::filesystem::path& filename);
+
+    bool FilenameIsVideo(const std::filesystem::path& filename);
+
     bool FilenameIsPhotoOrVideo(const std::filesystem::path& filename);
 
     enum class Sort

@@ -21,6 +21,24 @@ bool PhotoVideoRenamer::DirectoryExists(const fs::path& directory)
     return (fs::exists(directory) && fs::is_directory(directory));
 }
 
+bool PhotoVideoRenamer::FilenameIsPhoto(const std::filesystem::path& filename)
+{
+    const std::regex photo_extensions{".bmp|.heic|.jpeg|.jpg|.png", std::regex_constants::icase};
+
+    const auto filename_extension{filename.extension().string()};
+
+    return std::regex_match(filename_extension, photo_extensions);
+}
+
+bool PhotoVideoRenamer::FilenameIsVideo(const std::filesystem::path& filename)
+{
+    const std::regex video_extensions{".avi|.mov|.mp4", std::regex_constants::icase};
+
+    const auto filename_extension{filename.extension().string()};
+
+    return std::regex_match(filename_extension, video_extensions);
+}
+
 bool PhotoVideoRenamer::FilenameIsPhotoOrVideo(const fs::path& filename)
 {
     const std::regex photo_and_video_extensions{".avi|.bmp|.heic|.jpeg|.jpg|.mov|.mp4|.png", std::regex_constants::icase};
@@ -167,40 +185,45 @@ bool PhotoVideoRenamer::RenamePhotosAndVideosFromDirectory(const fs::path& direc
     return RenameFilenames(filenames, new_filenames);
 }
 
-void test()
+std::string PhotoVideoRenamer::GetDateTaken(const fs::path& filename)
 {
-    MediaInfoLib::MediaInfo MI;
-    MediaInfoLib::String file;
-    MI.Open(file);
+    if(FilenameIsPhoto(filename))
+    {
+        try
+        {
+            auto image = Exiv2::ImageFactory::open(filename.string());
+            image->readMetadata();
+            Exiv2::ExifData& exifData = image->exifData();
+            auto it = exifData.findKey(Exiv2::ExifKey("Exif.Photo.DateTimeOriginal"));
+            if(it != exifData.end())
+            {
+                return it->toString(); // Usually in "YYYY:MM:DD HH:MM:SS"
+            }
+        }
+        catch(Exiv2::Error& e)
+        {
+            std::cerr << "Error reading " << filename << ": " << e.what() << "\n";
+        }
+    }
+    else if(FilenameIsVideo(filename))
+    {
+        MediaInfoLib::MediaInfo MI;
+        MediaInfoLib::String file;
+        MI.Open(filename.wstring());
 
-/*     // Example: retrieve general creation date
-    std::string creationDate = MI.Get(MediaInfoLib::Stream_General, 0, "Encoded_Date", MediaInfoLib::Info_Text, MediaInfoLib::Info_Name);
-    if(creationDate.empty())
+        MI.Get(MediaInfoLib::Stream_General, 0, __T("FileSize"), MediaInfoLib::Info_Text, MediaInfoLib::Info_Name).c_str();
+
+        // Example: retrieve general creation date
+        //  std::string creationDate = MI.Get(MediaInfoLib::Stream_General, 0, "Encoded_Date", MediaInfoLib::Info_Text, MediaInfoLib::Info_Name);
+
+        /*         if(creationDate.empty())
     {
         creationDate = MI.Get(MediaInfoLib::Stream_General, 0, "Tagged_Date", MediaInfoLib::Info_Text, MediaInfoLib::Info_Name);
     }
 
     std::cout << "Creation Date: " << creationDate << std::endl; */
 
-    MI.Close();
-}
-
-std::string PhotoVideoRenamer::GetDateTaken(const fs::path& filename)
-{
-    try
-    {
-        auto image = Exiv2::ImageFactory::open(filename.string());
-        image->readMetadata();
-        Exiv2::ExifData& exifData = image->exifData();
-        auto it = exifData.findKey(Exiv2::ExifKey("Exif.Photo.DateTimeOriginal"));
-        if(it != exifData.end())
-        {
-            return it->toString(); // Usually in "YYYY:MM:DD HH:MM:SS"
-        }
-    }
-    catch(Exiv2::Error& e)
-    {
-        std::cerr << "Error reading " << filename << ": " << e.what() << "\n";
+        MI.Close();
     }
     return ""; // fallback if date not found
 }
