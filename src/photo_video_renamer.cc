@@ -3,6 +3,7 @@
 #include <boost/algorithm/string.hpp>
 #include <exiv2/exiv2.hpp>
 #include <fmt/format.h>
+#include <MediaInfo/MediaInfo.h>
 #include <natural_sort/natural_sort.hpp>
 
 #include <algorithm>
@@ -164,6 +165,24 @@ bool PhotoVideoRenamer::RenamePhotosAndVideosFromDirectory(const fs::path& direc
     }
 
     return RenameFilenames(filenames, new_filenames);
+}
+
+void test()
+{
+    MediaInfoLib::MediaInfo MI;
+    MediaInfoLib::String file;
+    MI.Open(file);
+
+/*     // Example: retrieve general creation date
+    std::string creationDate = MI.Get(MediaInfoLib::Stream_General, 0, "Encoded_Date", MediaInfoLib::Info_Text, MediaInfoLib::Info_Name);
+    if(creationDate.empty())
+    {
+        creationDate = MI.Get(MediaInfoLib::Stream_General, 0, "Tagged_Date", MediaInfoLib::Info_Text, MediaInfoLib::Info_Name);
+    }
+
+    std::cout << "Creation Date: " << creationDate << std::endl; */
+
+    MI.Close();
 }
 
 std::string PhotoVideoRenamer::GetDateTaken(const fs::path& filename)
