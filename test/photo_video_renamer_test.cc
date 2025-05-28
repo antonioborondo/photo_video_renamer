@@ -323,3 +323,11 @@ TEST_F(PhotoVideoRenamerTest, GenerateNewFilenamesByDateTaken)
 
     ASSERT_THAT(new_filenames_generated, testing::ElementsAre(fs::path{parent_directory.path() / "file_1.jpg"}, fs::path{parent_directory.path() / "file_3.jpg"}, fs::path{parent_directory.path() / "file_5.jpg"}, fs::path{parent_directory.path() / "file_4.jpg"}, fs::path{parent_directory.path() / "file_2.jpg"}));
 }
+
+TEST_F(PhotoVideoRenamerTest, Test)
+{
+    const auto date_photo = photo_video_renamer_.GetDateTaken("/home/antonioborondo/Desktop/IMG_20250518_104019.jpg");
+    const auto date_video = photo_video_renamer_.GetDateTaken("/home/antonioborondo/Desktop/IMG_20250518_104118.mp4");
+
+    ASSERT_THAT(date_photo.c_str(), "");
+}

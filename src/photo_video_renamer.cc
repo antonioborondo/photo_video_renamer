@@ -7,6 +7,8 @@
 #include <natural_sort/natural_sort.hpp>
 
 #include <algorithm>
+#include <codecvt>
+#include <locale>
 #include <regex>
 
 namespace fs = std::filesystem;
@@ -21,31 +23,32 @@ bool PhotoVideoRenamer::DirectoryExists(const fs::path& directory)
     return (fs::exists(directory) && fs::is_directory(directory));
 }
 
-bool PhotoVideoRenamer::FilenameIsPhoto(const std::filesystem::path& filename)
+PhotoVideoRenamer::FileType PhotoVideoRenamer::GetFileType(const std::filesystem::path& filename)
 {
     const std::regex photo_extensions{".bmp|.heic|.jpeg|.jpg|.png", std::regex_constants::icase};
-
-    const auto filename_extension{filename.extension().string()};
-
-    return std::regex_match(filename_extension, photo_extensions);
-}
-
-bool PhotoVideoRenamer::FilenameIsVideo(const std::filesystem::path& filename)
-{
     const std::regex video_extensions{".avi|.mov|.mp4", std::regex_constants::icase};
 
     const auto filename_extension{filename.extension().string()};
 
-    return std::regex_match(filename_extension, video_extensions);
+    if(std::regex_match(filename_extension, photo_extensions))
+    {
+        return FileType::Photo;
+    }
+    else if(std::regex_match(filename_extension, video_extensions))
+    {
+        return FileType::Video;
+    }
+    else
+    {
+        return FileType::Other;
+    }
 }
 
 bool PhotoVideoRenamer::FilenameIsPhotoOrVideo(const fs::path& filename)
 {
-    const std::regex photo_and_video_extensions{".avi|.bmp|.heic|.jpeg|.jpg|.mov|.mp4|.png", std::regex_constants::icase};
+    const auto file_type{GetFileType(filename)};
 
-    const auto filename_extension{filename.extension().string()};
-
-    return std::regex_match(filename_extension, photo_and_video_extensions);
+    return (file_type == FileType::Photo || file_type == FileType::Video);
 }
 
 std::vector<fs::path> PhotoVideoRenamer::GetFilenamesFromDirectory(const fs::path& directory, PhotoVideoRenamer::Sort sort)
@@ -187,7 +190,7 @@ bool PhotoVideoRenamer::RenamePhotosAndVideosFromDirectory(const fs::path& direc
 
 std::string PhotoVideoRenamer::GetDateTaken(const fs::path& filename)
 {
-    if(FilenameIsPhoto(filename))
+    if(GetFileType(filename) == FileType::Photo)
     {
         try
         {
@@ -205,25 +208,31 @@ std::string PhotoVideoRenamer::GetDateTaken(const fs::path& filename)
             std::cerr << "Error reading " << filename << ": " << e.what() << "\n";
         }
     }
-    else if(FilenameIsVideo(filename))
+    else if(GetFileType(filename) == FileType::Video)
     {
         MediaInfoLib::MediaInfo MI;
         MediaInfoLib::String file;
         MI.Open(filename.wstring());
 
-        MI.Get(MediaInfoLib::Stream_General, 0, __T("FileSize"), MediaInfoLib::Info_Text, MediaInfoLib::Info_Name).c_str();
+        //const auto file_size = MI.Get(MediaInfoLib::Stream_General, 0, __T("FileSize"), MediaInfoLib::Info_Text, MediaInfoLib::Info_Name).c_str();
 
         // Example: retrieve general creation date
-        //  std::string creationDate = MI.Get(MediaInfoLib::Stream_General, 0, "Encoded_Date", MediaInfoLib::Info_Text, MediaInfoLib::Info_Name);
-
-        /*         if(creationDate.empty())
-    {
-        creationDate = MI.Get(MediaInfoLib::Stream_General, 0, "Tagged_Date", MediaInfoLib::Info_Text, MediaInfoLib::Info_Name);
-    }
-
-    std::cout << "Creation Date: " << creationDate << std::endl; */
-
+        //const auto recorded_date{MI.Get(MediaInfoLib::Stream_General, 0, __T("Recorded_Date"), MediaInfoLib::Info_Text, MediaInfoLib::Info_Name)};
+        const auto encoded_date = MI.Get(MediaInfoLib::Stream_General, 0, __T("Encoded_Date"), MediaInfoLib::Info_Text, MediaInfoLib::Info_Name);
+        //auto tagged_date = MI.Get(MediaInfoLib::Stream_General, 0, __T("Tagged_Date"), MediaInfoLib::Info_Text, MediaInfoLib::Info_Name);
         MI.Close();
+
+        std::wstring wstr{encoded_date};
+        // create a converter for UTF-8 ⇔ UTF-16/32 (depending on sizeof(wchar_t))
+        std::wstring_convert<std::codecvt_utf8<wchar_t>> conv;
+
+        // convert to UTF-8 std::string
+        std::string utf8 = conv.to_bytes(wstr);
+
+        return utf8;
+
+        // …and back again, if you need:
+        //std::wstring back = conv.from_bytes(utf8);
     }
     return ""; // fallback if date not found
 }

@@ -14,6 +14,15 @@ public:
 
     bool DirectoryExists(const std::filesystem::path& directory);
 
+    enum class FileType
+    {
+        Photo,
+        Video,
+        Other,
+    };
+
+    FileType GetFileType(const std::filesystem::path& filename);
+
     bool FilenameIsPhoto(const std::filesystem::path& filename);
 
     bool FilenameIsVideo(const std::filesystem::path& filename);
