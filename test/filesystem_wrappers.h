@@ -3,6 +3,8 @@
 #include <cstdio>
 #include <filesystem>
 #include <fstream>
+#include <regex>
+#include <vector>
 
 class FilesystemWrapper
 {
@@ -36,10 +38,28 @@ public:
 class FileWrapper: public FilesystemWrapper
 {
 public:
-    FileWrapper(const DirectoryWrapper& parent_directory, const std::filesystem::path& filename)
+    enum class FileType
+    {
+        Text,
+        Photo,
+    };
+
+    FileWrapper(const DirectoryWrapper& parent_directory, const std::filesystem::path& filename, FileType file_type = FileType::Text)
     {
         path_ = parent_directory.path();
         path_ /= filename;
         std::ofstream file{path_};
+
+        if(file_type == FileType::Photo)
+        {
+            std::vector<std::byte> photo_header = {
+                std::byte{0xFF}, // Start of marker
+                std::byte{0xD8}, // SOI (Start Of Image) marker
+                std::byte{0xFF}, // Start of marker
+                std::byte{0xD9}, // EOI (End Of Image) marker
+            };
+
+            file.write(reinterpret_cast<const char*>(photo_header.data()), photo_header.size());
+        }
     }
 };

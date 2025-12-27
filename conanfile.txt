@@ -1,7 +1,9 @@
 [requires]
 boost/1.77.0
+exiv2/0.28.2
 fmt/8.0.1
 gtest/1.10.0
+libmediainfo/22.03
 
 [generators]
 CMakeDeps

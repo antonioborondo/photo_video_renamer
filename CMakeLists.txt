@@ -17,13 +17,18 @@ target_include_directories(photo_video_renamer_common
     src
 )
 
+#include(${CMAKE_BINARY_DIR}/conan_paths.cmake)
 find_package(Boost COMPONENTS filesystem REQUIRED)
+find_package(exiv2 REQUIRED)
 find_package(fmt REQUIRED)
+find_package(MediaInfoLib REQUIRED)
 
 target_link_libraries(photo_video_renamer_common
     PRIVATE
     Boost::filesystem
+    exiv2::exiv2
     fmt::fmt
+    mediainfo
     natural_sort
 )
 
@@ -50,6 +55,7 @@ target_link_libraries(photo_video_renamer_test
     GTest::gmock
     GTest::gtest_main
     photo_video_renamer_common
+    exiv2::exiv2
 )
 
 enable_testing()
